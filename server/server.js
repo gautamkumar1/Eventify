@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const oauthRoutes = require('./routes/oauthRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 require('./oAuth-Passport/passport');
 
 const app = express();
@@ -28,7 +29,7 @@ app.get('/',(req,res)=>{
 })
 app.use('/api/user', userRoutes);
 app.use('/auth/oauth', oauthRoutes);
-
+app.use('/api/events', eventRoutes);
 const PORT = process.env.PORT || 3000;
 sequelize.sync().then(() => {
   app.listen(PORT, () => {
