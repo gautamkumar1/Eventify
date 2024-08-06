@@ -8,9 +8,15 @@ const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const oauthRoutes = require('./routes/oauthRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
+const http = require('http');
+const { Server } = require('socket.io');
 require('./oAuth-Passport/passport');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 app.use(cookieParser());
 app.use(express.json());
 // setup session
@@ -27,9 +33,19 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/',(req,res)=>{
     res.send('Hello from server');
 })
+// User Routes
 app.use('/api/user', userRoutes);
+// Google and Facebook routes
 app.use('/auth/oauth', oauthRoutes);
+// Event Routes
 app.use('/api/events', eventRoutes);
+// Tickets and Booking Routes
+app.use('/api/ticket', ticketRoutes);
+
+// Socket.io connection - Real-time ticket availability updates
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 const PORT = process.env.PORT || 3000;
 sequelize.sync().then(() => {
   app.listen(PORT, () => {
