@@ -1,24 +1,23 @@
 const express = require('express');
 const { createEvent, editEvent, deleteEvent, getEvents } = require('../controllers/eventController');
 const upload = require('../middlewares/multerMiddleware');
+const { isAuthenticated,isAuthorized } = require('../middlewares/AuthMiddleware');
 const router = express.Router();
 
-
-
-router.post('/create-event', upload.fields([
+router.post('/create-event', isAuthenticated,isAuthorized(),upload.fields([
     {
         name: "imageUrl",
         maxCount: 1
     }
 ]), createEvent);
 
-router.put('/edit-event/:id', upload.fields([
+router.put('/edit-event/:id', isAuthenticated,isAuthorized(),upload.fields([
     {
         name: "imageUrl",
         maxCount: 1
     }
 ]), editEvent);
-router.delete('/delete-event/:id', deleteEvent);
-router.get('/get-events', getEvents);
+router.delete('/delete-event/:id', isAuthenticated,isAuthorized(),deleteEvent);
+router.get('/get-events', isAuthenticated,isAuthorized(),getEvents);
 
 module.exports = router;

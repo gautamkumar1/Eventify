@@ -49,13 +49,36 @@ const isAuthenticated = async (req, res, next) => {
 
 
 const isAuthorized = (...roles) => {
-    return (req, res, next) => {
-        // console.log(`Checking roles: ${roles}`);
-        // console.log(`User role: ${req.user.role}`);
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).send(`User with this role (${req.user.role}) not allowed to access this resource`);
+    return async (req, res, next) => {
+        try {
+            // Check if req.user is set
+            if (!req.user) {
+                return res.status(401).send('User not authenticated');
+            }
+
+            // Retrieve user from the database to check isAdmin
+            const user = await User.findOne({ where: { id: req.user.id } });
+
+            if (!user) {
+                return res.status(404).send('User not found');
+            }
+
+            // Check if the user is admin
+            if (!user.isAdmin) {
+                return res.status(403).send('User is not authorized');
+            }
+
+            // If no roles are provided, just check isAdmin
+            if (roles.length === 0) {
+                return next();
+            }
+
+
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error from authorized side');
         }
-        next();
     };
 };
 
