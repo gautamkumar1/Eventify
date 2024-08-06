@@ -27,7 +27,7 @@ const Booking = sequelize.define('Booking', {
     price: {
         type: DataTypes.INTEGER,
         allowNull: false,
-    }
+    },
 });
 
 Booking.belongsTo(User, { foreignKey: 'userId' });

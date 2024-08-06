@@ -9,13 +9,13 @@ const cookieParser = require('cookie-parser');
 const oauthRoutes = require('./routes/oauthRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
+const { initSocket } = require('./socket/socket');
 const http = require('http');
-const { Server } = require('socket.io');
 require('./oAuth-Passport/passport');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
 
 app.use(cookieParser());
 app.use(express.json());
@@ -33,6 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/',(req,res)=>{
     res.send('Hello from server');
 })
+
+
 // User Routes
 app.use('/api/user', userRoutes);
 // Google and Facebook routes
@@ -43,9 +45,10 @@ app.use('/api/events', eventRoutes);
 app.use('/api/ticket', ticketRoutes);
 
 // Socket.io connection - Real-time ticket availability updates
-io.on('connection', (socket) => {
-  console.log('a user connected');
-});
+// console.log("Connection checking...");
+
+
+initSocket(server);
 const PORT = process.env.PORT || 3000;
 sequelize.sync().then(() => {
   app.listen(PORT, () => {
@@ -54,3 +57,4 @@ sequelize.sync().then(() => {
 }).catch((error) => {
   console.error('Unable to connect to the database:', error);
 });
+
