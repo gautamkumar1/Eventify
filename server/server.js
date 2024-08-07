@@ -10,6 +10,8 @@ const oauthRoutes = require('./routes/oauthRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const { initSocket } = require('./socket/socket');
+const paymentRoutes = require('./routes/paymentRoutes');
+
 const http = require('http');
 require('./oAuth-Passport/passport');
 
@@ -43,10 +45,9 @@ app.use('/auth/oauth', oauthRoutes);
 app.use('/api/events', eventRoutes);
 // Tickets and Booking Routes
 app.use('/api/ticket', ticketRoutes);
-
+// Payment Routes
+app.use('/api/payment', paymentRoutes);
 // Socket.io connection - Real-time ticket availability updates
-// console.log("Connection checking...");
-
 
 initSocket(server);
 const PORT = process.env.PORT || 3000;
