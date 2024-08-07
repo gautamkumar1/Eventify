@@ -1,17 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/Db');
-const User = require('./User');
 const Ticket = require('./Ticket');
 
 const Booking = sequelize.define('Booking', {
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,
-            key: 'id',
-        },
-    },
     ticketId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -19,6 +10,23 @@ const Booking = sequelize.define('Booking', {
             model: Ticket,
             key: 'id',
         },
+    },
+    fullname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    event: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    ticketType: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -28,9 +36,13 @@ const Booking = sequelize.define('Booking', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    paymentStatus: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 });
 
-Booking.belongsTo(User, { foreignKey: 'userId' });
 Booking.belongsTo(Ticket, { foreignKey: 'ticketId' });
 
 module.exports = Booking;
+

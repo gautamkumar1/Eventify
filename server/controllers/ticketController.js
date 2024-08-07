@@ -3,19 +3,17 @@ const Booking = require('../models/Booking');
 const { getIo } = require('../socket/socket');
 
 exports.createTicketType = async (req, res) => {
-    const { type, price, available } = req.body;
-    if (!type ||!price ||!available) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
     try {
-        const ticket = await Ticket.create({ type, price, available });
-        res.status(201).json({message: 'Ticket created successfully',
-            ticket: ticket
-        })
+        const { eventname,type, price, available } = req.body;
+        if (!eventname || !type || !price || !available) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
+        const ticket = await Ticket.create({ eventname, type, price, available });
+        res.status(201).json({ message: "Ticket created successfully", ticket });
     } catch (error) {
         console.log(error);
-        
-        res.status(400).json({message: 'Ticket created failed'});
+        res.status(400).json({ message: "Ticket creation failed", error });
     }
 };
 
@@ -32,8 +30,8 @@ exports.getTickets = async (req, res) => {
 };
 
 exports.bookTicket = async (req, res) => {
-    const { ticketId, quantity,price } = req.body;
-    if (!ticketId ||!quantity || !price) {
+    const { ticketId, quantity,price,fullname,paymentStatus,ticketType,event,email } = req.body;
+    if (!ticketId ||!quantity || !price || !fullname || !paymentStatus || !ticketType || !event || !email) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
     try {
@@ -52,7 +50,12 @@ exports.bookTicket = async (req, res) => {
             userId: req.user.id,
             ticketId: ticket.id,
             quantity,
-            price
+            price,
+            fullname,
+            paymentStatus,
+            ticketType,
+            event,
+            email
         });
 
         res.status(200).json({ message: 'Ticket booked successfully',
