@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "echo 'No build step needed'",
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
