@@ -1,15 +1,54 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Mail, Lock, } from "lucide-react";
 import Input from "../sourceComponents/Input";
 import { Button } from "../../components/ui/button"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, reset } from '../redux/auth/authSlice';
+import { toast } from "react-toastify";
 
 export default function Login() {
-    return (
+    const [users, setUsers] = useState({
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
+    const handleInput = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setUsers({ ...users, [name]: value });
+    };
 
+    const dispatch = useDispatch();
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error("Login failed!");
+        }
+
+        if (isSuccess) {
+            setUsers({email:"",password:""})
+            toast.success('Login successful!');
+            navigate('/events')
+
+        }
+
+        dispatch(reset());
+    }, [isError, isSuccess, message, dispatch]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(loginUser(users));
+    };
+
+    return (
         <div className="flex flex-col min-h-screen justify-center items-center">
+            
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -22,40 +61,40 @@ export default function Login() {
                             Welcome to Eventify
                         </h2>
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <Input
                                 icon={Mail}
                                 type='email'
                                 placeholder='Enter your email'
+                                name='email'
+                                value={users.email}
+                                onChange={handleInput}
                             />
 
                             <Input
                                 icon={Lock}
                                 type='password'
                                 placeholder='Password'
+                                name='password'
+                                value={users.password}
+                                onChange={handleInput}
                             />
-                            {/* Forgot password */}
-                            {/* <div className='flex items-center mb-6'>
-                                <Link to='/forgot-password' className='text-sm text-green-400 hover:underline'>
-                                    Forgot password?
-                                </Link>
-                            </div> */}
                             <div>
-                                <Button type="submit" className="w-full">
-                                    Login
+                                <Button type="submit" disabled={isLoading} className="w-full">
+                                    {isLoading ? 'Loading...' : 'Login'}
                                 </Button>
                             </div>
                         </form>
                         <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 pt-3">
-                             <Button className="w-full sm:w-auto">
-                               <ChromeIcon className="mr-2 h-5 w-5" />
-                          Login with Google
-                        </Button>
-                           <Button className="w-full sm:w-auto">
-                              <FacebookIcon className="mr-2 h-5 w-5" />
-                             Login with Facebook
-                        </Button>
-                  </div>
+                            <Button className="w-full sm:w-auto">
+                                <ChromeIcon className="mr-2 h-5 w-5" />
+                                Login with Google
+                            </Button>
+                            <Button className="w-full sm:w-auto">
+                                <FacebookIcon className="mr-2 h-5 w-5" />
+                                Login with Facebook
+                            </Button>
+                        </div>
                     </div>
                     <div className='px-8 py-4 bg-gray-900 bg-opacity-50 flex justify-center'>
                         <p className='text-sm text-gray-400'>
@@ -68,9 +107,9 @@ export default function Login() {
                 </div>
             </motion.div>
         </div>
-
     );
 }
+
 
 function ChromeIcon(props) {
     return (

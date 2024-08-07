@@ -1,12 +1,49 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Mail, Lock,User } from "lucide-react";
 import Input from "../sourceComponents/Input";
 import { Button } from "../../components/ui/button"
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import {registerUser, reset } from '../redux/auth/authSlice';
+import { toast } from "react-toastify";
 export default function Register() {
+    const [user, setUser] = useState({
+        username:"",
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
+    const handleInput = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setUser({ ...user, [name]: value });
+    };
+
+    const dispatch = useDispatch();
+    const {isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error("Register failed!");
+        }
+
+        if (isSuccess) {
+            setUser({ username: "", email: "", password: ""});
+            toast.success('Register successful!');
+            navigate('/login');
+        }
+
+        dispatch(reset());
+    }, [isError, isSuccess, message, dispatch]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(registerUser(user));
+    };
+
     return (
 
         <div className="flex flex-col min-h-screen justify-center items-center">
@@ -22,11 +59,14 @@ export default function Register() {
                         Create an account
                         </h2>
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <Input
                                 icon={User}
                                 type='username'
                                 placeholder='Username'
+                                name='username'
+                                value={user.username} 
+                                onChange={handleInput} 
                             />
 
 
@@ -34,12 +74,18 @@ export default function Register() {
                                 icon={Mail}
                                 type='email'
                                 placeholder='Enter your email'
+                                name='email'
+                                value={user.email} 
+                                onChange={handleInput} 
                             />
 
                             <Input
                                 icon={Lock}
                                 type='password'
                                 placeholder='Password'
+                                name='password'
+                                value={user.password} 
+                                onChange={handleInput} 
                             />
                             {/* Forgot password */}
                             {/* <div className='flex items-center mb-6'>
@@ -48,8 +94,8 @@ export default function Register() {
                                 </Link>
                             </div> */}
                             <div>
-                                <Button type="submit" className="w-full">
-                                    Register
+                                <Button type="submit" disabled={isLoading} className="w-full">
+                                {isLoading ? 'Loading...' : 'Register'}
                                 </Button>
                             </div>
                         </form>

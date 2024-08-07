@@ -2,7 +2,7 @@
 
 function Event() {
   return (
-    <div>Event</div>
+    <div className="flex flex-col min-h-screen justify-center items-center">Event</div>
   )
 }
 
