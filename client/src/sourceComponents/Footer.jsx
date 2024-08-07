@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="flex flex-col gap-4">
           <Link href="#" className="flex items-center gap-2" prefetch={false}>
             <MountainIcon className="w-8 h-8" />
-            <span className="text-xl font-bold">Event Booking</span>
+            <span className="text-xl font-bold">Eventify</span>
           </Link>
           <p className="text-muted-foreground">Discover and book the best events in your city.</p>
         </div>
