@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
 
-// import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/card"
-// import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "../../components/ui/dropdown-menu"
-// import { Button } from "../../components/ui/button"
-// import {Link} from "react-router-dom"
-// import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table"
-// import { Badge } from "../../components/ui/badge"
-// import adminImage from "../assets/admin pic.jpg"
+import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/card"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "../../components/ui/dropdown-menu"
+import { Button } from "../../components/ui/button"
+import {Link,Outlet} from "react-router-dom"
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table"
+import { Badge } from "../../components/ui/badge"
+import adminImage from "../assets/admin pic.jpg"
 // export default function AdminDashboard() {
 //   return (
 //     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -63,7 +64,7 @@
                 
 //               >
 //                 <CalendarIcon className="h-5 w-5" />
-//                 Events
+//                 Create Event
 //               </Link>
 //               <Link
 //                 href="#"
@@ -217,9 +218,51 @@
 //     </div>
 //   )
 // }
-export default function AdminDashboard(){
-  return <div>Admin Dashboard</div>
+
+export default function AdminDashboard() {
+  return (
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      {/* Header and other UI components */}
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        {/* Header content */}
+      </header>
+      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-[240px_1fr]">
+          <div className="hidden border-r bg-muted/40 lg:block">
+            <nav className="grid gap-2 p-4">
+              <Link
+                to="/admin/create-events"
+                className="flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                <CalendarIcon className="h-5 w-5" />
+                Create Event
+              </Link>
+              <Link
+                to="#"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              >
+                <UsersIcon className="h-5 w-5" />
+                Users
+              </Link>
+              <Link
+                to="#"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              >
+                <ClipboardIcon className="h-5 w-5" />
+                Bookings
+              </Link>
+            </nav>
+          </div>
+          <div className="grid gap-4">
+            {/* This is where the routed content will render */}
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  );
 }
+
 function CalendarIcon(props) {
   return (
     <svg

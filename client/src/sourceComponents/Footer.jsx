@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/button"
 export default function Footer() {
   return (
     <footer className="bg-muted py-12 md:py-16 lg:py-20">
-      <div className="container max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto max-w-6xl grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-4">
           <Link href="#" className="flex items-center gap-2" prefetch={false}>
             <MountainIcon className="w-8 h-8" />
@@ -54,7 +54,7 @@ export default function Footer() {
           <p className="text-sm text-muted-foreground">Get the latest updates and event recommendations.</p>
         </div>
       </div>
-      <div className="container max-w-6xl mt-12 flex items-center justify-between text-sm text-muted-foreground">
+      <div className="container mx-auto max-w-6xl mt-12 flex flex-col items-center justify-between gap-4 md:flex-row text-sm text-muted-foreground">
         <p>&copy; 2024 Eventify. All rights reserved.</p>
         <nav className="flex gap-4">
           <Link href="#" className="hover:underline" prefetch={false}>
@@ -68,6 +68,7 @@ export default function Footer() {
     </footer>
   )
 }
+
 
 function MountainIcon(props) {
   return (

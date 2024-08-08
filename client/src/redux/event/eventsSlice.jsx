@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
 
 export const createEvent = createAsyncThunk(
   'events/createEvent',
   async (eventData, { rejectWithValue }) => {
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('Not authenticated');
     }

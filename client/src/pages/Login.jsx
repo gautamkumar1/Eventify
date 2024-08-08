@@ -21,7 +21,6 @@ export default function Login() {
     const navigate = useNavigate();
     const { loginWithRedirect , error} = useAuth0();
 
-    console.log("error  >>>>>> ", error);
     
     const handleInput = (e) => {
         let name = e.target.name;
@@ -45,16 +44,13 @@ export default function Login() {
             toast.success('Login successful!');
             navigate('/events');
         }
-
-
-
         dispatch(reset());
     }, [isError, isSuccess, message, dispatch]);
-    console.log("response data: ",message)
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(loginUser(users));
-        console.log("cookies: ",Cookies.get('token'));
+        
 
     };
 

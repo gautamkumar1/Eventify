@@ -75,6 +75,7 @@ function HomePage() {
                 className="rounded-t-xl"
                 style={{ aspectRatio: "600/400", objectFit: "cover" }}
               />
+              {/* card content */}
               <CardContent className="p-6 space-y-4">
                 <h3 className="text-2xl font-bold">Music Festival</h3>
                 <p className="text-muted-foreground">Join us for a weekend of live music, food, and fun.</p>
