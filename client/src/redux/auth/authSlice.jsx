@@ -1,12 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/user/login', userData);
+      localStorage.setItem('token', response.data.token);
+      
+      console.log("Response Data: " + JSON.stringify(response));
+      
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -26,18 +29,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      Cookies.remove('token');
-      return true; // or any success message you want to return
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -47,8 +38,16 @@ const authSlice = createSlice({
     isSuccess: false,
     isError: false,
     message: '',
+    isAdmin: false, // Add isAdmin to initial state
   },
   reducers: {
+    logoutUser: (state) => {
+      localStorage.removeItem('token');
+      state.user = null;
+      state.isLoggedIn = false;
+      state.isSuccess = false;
+      state.isAdmin = false; // Reset isAdmin on logout
+    },
     reset: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
@@ -66,8 +65,9 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = action.payload.user; // Set the user data
         state.isLoggedIn = true; // Set to true on successful login
+        state.isAdmin = action.payload.user.isAdmin; // Set isAdmin from payload.user
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -87,24 +87,9 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-      })
-      // Handle logoutUser
-      .addCase(logoutUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = null;
-        state.isLoggedIn = false; 
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
       });
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, logoutUser } = authSlice.actions;
 export default authSlice.reducer;

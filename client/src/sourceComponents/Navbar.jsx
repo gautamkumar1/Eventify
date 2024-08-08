@@ -7,13 +7,16 @@ import { logoutUser, reset } from '../redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
+import Cookies from "js-cookie";
+
+
 
 // export default function Navbar() {
 //   const dispatch = useDispatch();
 //   const navigate = useNavigate();
-//   const { isAuthenticated,logout } = useAuth0();
+//   const { isAuthenticated, logout } = useAuth0();
 //   const { isLoggedIn } = useSelector((state) => state.auth);
-  
+
 //   const handleLogout = async () => {
 //     try {
 //       await dispatch(logoutUser()).unwrap();
@@ -24,8 +27,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 //       toast.error('Failed to logout');
 //       console.error(error);
 //     }
-    
 //   };
+
+//   const handleOAuthLogout = () => {
+//     logout({ returnTo: window.location.origin });
+//   };
+
+  
+
+//   const showLogoutButton = true;
 
 //   return (
 //     <header className="sticky top-0 z-50 w-full bg-background border-b">
@@ -63,10 +73,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 //             <InfoIcon className="w-5 h-5" />
 //             About
 //           </Link>
-//           {/* Using Jwt */}
 //           {isLoggedIn ? (
 //             <button
-//               onClick={handleLogout}
+              
 //               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
 //             >
 //               <LogInIcon className="w-5 h-5" />
@@ -90,7 +99,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 //               </Link>
 //             </>
 //           )}
-
 //         </nav>
 //         <Sheet>
 //           <SheetTrigger asChild>
@@ -99,7 +107,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 //               <span className="sr-only">Toggle navigation menu</span>
 //             </Button>
 //           </SheetTrigger>
-//           {/* Responsive */}
 //           <SheetContent side="left" className="md:hidden">
 //             <nav className="grid gap-4 p-4">
 //               <Link
@@ -130,9 +137,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 //                 <InfoIcon className="w-5 h-5" />
 //                 About
 //               </Link>
-//               {isLoggedIn ? (
+//               {showLogoutButton ? (
 //                 <button
-//                   onClick={handleLogout}
+//                   onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
 //                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
 //                 >
 //                   <LogInIcon className="w-5 h-5" />
@@ -161,7 +168,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 //         </Sheet>
 //       </div>
 //     </header>
-//   )
+//   );
 // }
 
 export default function Navbar() {
@@ -170,23 +177,17 @@ export default function Navbar() {
   const { isAuthenticated, logout } = useAuth0();
   const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logoutUser()).unwrap();
-      dispatch(reset());
-      toast.success('Logout successful');
-      navigate('/login');
-    } catch (error) {
-      toast.error('Failed to logout');
-      console.error(error);
-    }
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    dispatch(reset());
+    toast.success('Logout successful');
+    navigate('/login');
   };
+  
 
   const handleOAuthLogout = () => {
     logout({ returnTo: window.location.origin });
   };
-
-  const showLogoutButton = isLoggedIn || isAuthenticated;
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background border-b">
@@ -224,7 +225,7 @@ export default function Navbar() {
             <InfoIcon className="w-5 h-5" />
             About
           </Link>
-          {showLogoutButton ? (
+          {isLoggedIn || isAuthenticated ? (
             <button
               onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
@@ -288,7 +289,7 @@ export default function Navbar() {
                 <InfoIcon className="w-5 h-5" />
                 About
               </Link>
-              {showLogoutButton ? (
+              {isLoggedIn || isAuthenticated ? (
                 <button
                   onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground"

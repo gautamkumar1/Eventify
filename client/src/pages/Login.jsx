@@ -11,113 +11,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, reset } from '../redux/auth/authSlice';
 import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
-// export default function Login() {
-//     const [users, setUsers] = useState({
-//         email: "",
-//         password: "",
-//     });
-//     const navigate = useNavigate();
-//     // oAuth - Google and Facebook
-//   const { loginWithRedirect } = useAuth0();
-//     const handleInput = (e) => {
-//         let name = e.target.name;
-//         let value = e.target.value;
-//         setUsers({ ...users, [name]: value });
-//     };
+import Cookies from "js-cookie";
 
-//     const dispatch = useDispatch();
-//     const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
-
-//     useEffect(() => {
-//         if (isError) {
-//             toast.error("Login failed!");
-//         }
-
-//         if (isSuccess) {
-//             setUsers({email:"",password:""})
-//             toast.success('Login successful!');
-//             navigate('/events')
-
-//         }
-
-//         dispatch(reset());
-//     }, [isError, isSuccess, message, dispatch]);
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         dispatch(loginUser(users));
-//     };
-
-//     return (
-//         <div className="flex flex-col min-h-screen justify-center items-center">
-            
-//             <motion.div
-//                 initial={{ opacity: 0, y: 20 }}
-//                 animate={{ opacity: 1, y: 0 }}
-//                 transition={{ duration: 0.5 }}
-//                 className='max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden'
-//             >
-//                 <div>
-//                     <div className='p-8'>
-//                         <h2 className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>
-//                             Welcome to Eventify
-//                         </h2>
-
-//                         <form onSubmit={handleSubmit}>
-//                             <Input
-//                                 icon={Mail}
-//                                 type='email'
-//                                 placeholder='Enter your email'
-//                                 name='email'
-//                                 value={users.email}
-//                                 onChange={handleInput}
-//                             />
-
-//                             <Input
-//                                 icon={Lock}
-//                                 type='password'
-//                                 placeholder='Password'
-//                                 name='password'
-//                                 value={users.password}
-//                                 onChange={handleInput}
-//                             />
-//                             <div>
-//                                 <Button type="submit" disabled={isLoading} className="w-full">
-//                                     {isLoading ? 'Loading...' : 'Login'}
-//                                 </Button>
-//                             </div>
-//                         </form>
-//                         <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 pt-3">
-//                             <Button onClick={() => loginWithRedirect()} className="w-full sm:w-auto">
-//                                 <ChromeIcon className="mr-2 h-5 w-5" />
-//                                 Login with Google
-//                             </Button>
-//                             <Button onClick={() => loginWithRedirect()} className="w-full sm:w-auto">
-//                                 <FacebookIcon className="mr-2 h-5 w-5" />
-//                                 Login with Facebook
-//                             </Button>
-//                         </div>
-//                     </div>
-//                     <div className='px-8 py-4 bg-gray-900 bg-opacity-50 flex justify-center'>
-//                         <p className='text-sm text-gray-400'>
-//                             Don't have an account?{" "}
-//                             <Link to='/register' className='text-green-400 hover:underline'>
-//                                 Sign up
-//                             </Link>
-//                         </p>
-//                     </div>
-//                 </div>
-//             </motion.div>
-//         </div>
-//     );
-// }
 export default function Login() {
     const [users, setUsers] = useState({
         email: "",
         password: "",
     });
     const navigate = useNavigate();
-    const { loginWithRedirect } = useAuth0();
+    const { loginWithRedirect , error} = useAuth0();
+
+    console.log("error  >>>>>> ", error);
     
     const handleInput = (e) => {
         let name = e.target.name;
@@ -135,16 +39,23 @@ export default function Login() {
 
         if (isSuccess) {
             setUsers({ email: "", password: "" });
+            
+            
+            
             toast.success('Login successful!');
             navigate('/events');
         }
 
+
+
         dispatch(reset());
     }, [isError, isSuccess, message, dispatch]);
-
+    console.log("response data: ",message)
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(loginUser(users));
+        console.log("cookies: ",Cookies.get('token'));
+
     };
 
     // const handleOAuthLogin = (connection) => {
