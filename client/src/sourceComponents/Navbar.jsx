@@ -1,15 +1,197 @@
 /* eslint-disable no-unused-vars */
-
 import { Link } from "react-router-dom"
 import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
 import { Button } from "../../components/ui/button"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser, reset } from '../redux/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { useAuth0 } from "@auth0/auth0-react";
+
+// export default function Navbar() {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const { isAuthenticated,logout } = useAuth0();
+//   const { isLoggedIn } = useSelector((state) => state.auth);
+  
+//   const handleLogout = async () => {
+//     try {
+//       await dispatch(logoutUser()).unwrap();
+//       dispatch(reset());
+//       toast.success('Logout successful');
+//       navigate('/login');
+//     } catch (error) {
+//       toast.error('Failed to logout');
+//       console.error(error);
+//     }
+    
+//   };
+
+//   return (
+//     <header className="sticky top-0 z-50 w-full bg-background border-b">
+//       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
+//         <Link to="/" className="flex items-center gap-2">
+//           <MountainIcon className="w-6 h-6" />
+//           <span className="text-lg font-bold">Eventify</span>
+//         </Link>
+//         <nav className="hidden md:flex items-center gap-6">
+//           <Link
+//             to="/"
+//             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//           >
+//             <HomeIcon className="w-5 h-5" />
+//             Home
+//           </Link>
+//           <Link
+//             to="/events"
+//             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//           >
+//             <CalendarIcon className="w-5 h-5" />
+//             Events
+//           </Link>
+//           <Link
+//             to="#"
+//             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//           >
+//             <MailIcon className="w-5 h-5" />
+//             Contact
+//           </Link>
+//           <Link
+//             to="#"
+//             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//           >
+//             <InfoIcon className="w-5 h-5" />
+//             About
+//           </Link>
+//           {/* Using Jwt */}
+//           {isLoggedIn ? (
+//             <button
+//               onClick={handleLogout}
+//               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//             >
+//               <LogInIcon className="w-5 h-5" />
+//               Logout
+//             </button>
+//           ) : (
+//             <>
+//               <Link
+//                 to="/login"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <LogInIcon className="w-5 h-5" />
+//                 Login
+//               </Link>
+//               <Link
+//                 to="/register"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <LogInIcon className="w-5 h-5" />
+//                 Register
+//               </Link>
+//             </>
+//           )}
+
+//         </nav>
+//         <Sheet>
+//           <SheetTrigger asChild>
+//             <Button variant="outline" size="icon" className="md:hidden">
+//               <MenuIcon className="w-6 h-6" />
+//               <span className="sr-only">Toggle navigation menu</span>
+//             </Button>
+//           </SheetTrigger>
+//           {/* Responsive */}
+//           <SheetContent side="left" className="md:hidden">
+//             <nav className="grid gap-4 p-4">
+//               <Link
+//                 to="/"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <HomeIcon className="w-5 h-5" />
+//                 Home
+//               </Link>
+//               <Link
+//                 to="/events"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <CalendarIcon className="w-5 h-5" />
+//                 Events
+//               </Link>
+//               <Link
+//                 to="#"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <MailIcon className="w-5 h-5" />
+//                 Contact
+//               </Link>
+//               <Link
+//                 to="#"
+//                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//               >
+//                 <InfoIcon className="w-5 h-5" />
+//                 About
+//               </Link>
+//               {isLoggedIn ? (
+//                 <button
+//                   onClick={handleLogout}
+//                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//                 >
+//                   <LogInIcon className="w-5 h-5" />
+//                   Logout
+//                 </button>
+//               ) : (
+//                 <>
+//                   <Link
+//                     to="/login"
+//                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//                   >
+//                     <LogInIcon className="w-5 h-5" />
+//                     Login
+//                   </Link>
+//                   <Link
+//                     to="/register"
+//                     className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+//                   >
+//                     <LogInIcon className="w-5 h-5" />
+//                     Register
+//                   </Link>
+//                 </>
+//               )}
+//             </nav>
+//           </SheetContent>
+//         </Sheet>
+//       </div>
+//     </header>
+//   )
+// }
+
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth0();
   const { isLoggedIn } = useSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      dispatch(reset());
+      toast.success('Logout successful');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Failed to logout');
+      console.error(error);
+    }
+  };
+
+  const handleOAuthLogout = () => {
+    logout({ returnTo: window.location.origin });
+  };
+
+  const showLogoutButton = isLoggedIn || isAuthenticated;
+
   return (
     <header className="sticky top-0 z-50 w-full bg-background border-b">
       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+        <Link to="/" className="flex items-center gap-2">
           <MountainIcon className="w-6 h-6" />
           <span className="text-lg font-bold">Eventify</span>
         </Link>
@@ -17,7 +199,6 @@ export default function Navbar() {
           <Link
             to="/"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
           >
             <HomeIcon className="w-5 h-5" />
             Home
@@ -25,43 +206,50 @@ export default function Navbar() {
           <Link
             to="/events"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
           >
             <CalendarIcon className="w-5 h-5" />
             Events
           </Link>
           <Link
-            href="#"
+            to="#"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
           >
             <MailIcon className="w-5 h-5" />
             Contact
           </Link>
           <Link
-            href="#"
+            to="#"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
           >
             <InfoIcon className="w-5 h-5" />
             About
           </Link>
-          <Link
-            to="/login"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
-          >
-            <LogInIcon className="w-5 h-5" />
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            prefetch={false}
-          >
-            <LogInIcon className="w-5 h-5" />
-            Register
-          </Link>
+          {showLogoutButton ? (
+            <button
+              onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+            >
+              <LogInIcon className="w-5 h-5" />
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <LogInIcon className="w-5 h-5" />
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <LogInIcon className="w-5 h-5" />
+                Register
+              </Link>
+            </>
+          )}
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -70,13 +258,11 @@ export default function Navbar() {
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          {/* Responsive  */}
           <SheetContent side="left" className="md:hidden">
             <nav className="grid gap-4 p-4">
               <Link
                 to="/"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                prefetch={false}
               >
                 <HomeIcon className="w-5 h-5" />
                 Home
@@ -84,51 +270,57 @@ export default function Navbar() {
               <Link
                 to="/events"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                prefetch={false}
               >
                 <CalendarIcon className="w-5 h-5" />
                 Events
               </Link>
               <Link
-                href="#"
+                to="#"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                prefetch={false}
               >
                 <MailIcon className="w-5 h-5" />
                 Contact
               </Link>
               <Link
-                href="#"
+                to="#"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                prefetch={false}
               >
                 <InfoIcon className="w-5 h-5" />
                 About
               </Link>
-              <Link
-                to="/login"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-
-              >
-                <LogInIcon className="w-5 h-5" />
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                prefetch={false}
-              >
-                <LogInIcon className="w-5 h-5" />
-                Register
-              </Link>
+              {showLogoutButton ? (
+                <button
+                  onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                >
+                  <LogInIcon className="w-5 h-5" />
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogInIcon className="w-5 h-5" />
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogInIcon className="w-5 h-5" />
+                    Register
+                  </Link>
+                </>
+              )}
             </nav>
           </SheetContent>
         </Sheet>
       </div>
     </header>
-  )
+  );
 }
-
 function CalendarIcon(props) {
   return (
     <svg
