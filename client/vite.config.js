@@ -6,7 +6,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target:'https://task-3-event-management-utor.vercel.app',
+        target:'http://localhost:3000',
       }
     }
   },
