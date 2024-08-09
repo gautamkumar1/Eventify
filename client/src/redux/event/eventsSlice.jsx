@@ -48,15 +48,13 @@ export const editEvent = createAsyncThunk(
 export const fetchEvents = createAsyncThunk(
   'events/fetchEvents',
   async (_, { rejectWithValue }) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Not authenticated');
-    }
+    // const token = localStorage.getItem('token');
+    // if (!token) {
+    //   throw new Error('Not authenticated');
+    // }
     try {
       const response = await axios.get('/api/events/get-events', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        
       });
       return response.data.events;
     } catch (error) {

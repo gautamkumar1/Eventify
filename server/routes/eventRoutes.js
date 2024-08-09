@@ -19,6 +19,6 @@ router.put('/edit-event/:id', isAuthenticated,isAuthorized(),upload.fields([
     }
 ]), editEvent);
 router.delete('/delete-event/:id', isAuthenticated,isAuthorized(),deleteEvent);
-router.get('/get-events', isAuthenticated,isAuthorized(),getEvents);
+router.get('/get-events', getEvents);
 router.get('/get-users', isAuthenticated,isAuthorized(),getAllUsersData);
 module.exports = router;
