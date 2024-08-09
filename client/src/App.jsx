@@ -34,7 +34,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/events" element={<ProtectedRoute element={<Event />} />} />
+          <Route path="/events" element={<Event/>} />
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
          <Route path="/contact" element={<Contact/> } />
          <Route path="/about" element={<About/> } />

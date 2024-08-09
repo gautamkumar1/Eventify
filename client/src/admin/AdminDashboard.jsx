@@ -7,7 +7,7 @@ import CreateEvent from "./Create-Event"
 import GetAllEvent from "./GetAllEventTable"
 import GetAllUsers from "./GetAllUser"
 import TicketCreationPage from "./CreateTicket"
-import { Ticket } from "lucide-react";
+
 import GetAllTickets from "./GetAllTickets"
 
 export default function AdminDashboard() {

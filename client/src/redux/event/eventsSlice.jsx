@@ -13,6 +13,7 @@ export const createEvent = createAsyncThunk(
       const response = await axios.post('/api/events/create-event', eventData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         },
       });
       return response.data;

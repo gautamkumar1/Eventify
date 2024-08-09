@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../../components/ui/card"
 import { Label } from "../../components/ui/label"
@@ -18,14 +19,24 @@ export default function CreateEvent() {
     time: "",
     imageUrl: ""
   })
+  const [eventCreated, setEventCreated] = useState(false);
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.events);
-
+  const [isEventToast, setIsEventToast] = useState(false);
+  if(eventCreated && status === "succeeded"){
+    setIsEventToast(true);
+    setEventCreated(false);
+  }
+   if(isEventToast){
+      toast.success("Event created successfully")
+      setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
+    }
   useEffect(()=>{
     if(error){
       toast.error("Create event failed")
     }
-    if(status === "succeeded"){
+
+    if(isEventToast){
       toast.success("Event created successfully")
       setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
     }
@@ -42,11 +53,7 @@ export default function CreateEvent() {
     e.preventDefault();
 
     // Constructing the form data to send as multipart/form-data if there's an image file
-    const eventData = new FormData();
-    for (const key in event) {
-      eventData.append(key, event[key]);
-    }
-
+    
     // Dispatch the createEvent action with the formData
     dispatch(createEvent(event));
   };
