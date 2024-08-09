@@ -52,50 +52,94 @@ export default function CreateEvent() {
   };
   return (
     <div className="flex flex-col min-h-dvh">
-      <main className="flex-1 flex items-center justify-center p-4 md:p-8">
-        <Card className="w-full max-w-2xl mx-auto p-6 sm:p-8 md:p-10">
-          <CardHeader className="mb-6">
-            <CardTitle className="text-3xl font-bold">Create a New Event</CardTitle>
-            <CardDescription>Fill out the details below to list your event.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="grid gap-6">
+    <main className="flex-1 flex items-center justify-center p-4 md:p-8">
+      <Card className="w-full max-w-2xl mx-auto p-6 sm:p-8 md:p-10 bg-gray-800">
+        <CardHeader className="mb-6">
+          <CardTitle className="text-3xl font-bold text-white">Create a New Event</CardTitle>
+          <CardDescription className="text-gray-400">Fill out the details below to list your event.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="grid gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="title" className="text-gray-300">Event Title</Label>
+              <Input
+                id="title"
+                name="title"
+                value={event.title}
+                onChange={handleInput}
+                placeholder="Enter event title"
+                className="text-gray-200 bg-gray-900"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description" className="text-gray-300">Description</Label>
+              <Textarea
+                id="description"
+                rows={4}
+                name="description"
+                value={event.description}
+                onChange={handleInput}
+                placeholder="Provide details about the event"
+                className="text-gray-200 bg-gray-900"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="title">Event Title</Label>
-                <Input id="title" name="title" value={event.title} onChange={handleInput} placeholder="Enter event title" />
+                <Label htmlFor="location" className="text-gray-300">Location</Label>
+                <Input
+                  id="location"
+                  name="location"
+                  value={event.location}
+                  onChange={handleInput}
+                  placeholder="Enter event location"
+                  className="text-gray-200 bg-gray-900"
+                />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea id="description" rows={4} name="description" value={event.description} onChange={handleInput} placeholder="Provide details about the event" />
+                <Label htmlFor="date" className="text-gray-300">Date</Label>
+                <Input
+                  id="date"
+                  name="date"
+                  value={event.date}
+                  onChange={handleInput}
+                  type="date"
+                  className="text-gray-200 bg-gray-900"
+                />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Input id="location" name="location" value={event.location} onChange={handleInput} placeholder="Enter event location" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="date">Date</Label>
-                  <Input id="date" name="date" value={event.date} onChange={handleInput} type="date" />
-                </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="time" className="text-gray-300">Time</Label>
+                <Input
+                  id="time"
+                  name="time"
+                  value={event.time}
+                  onChange={handleInput}
+                  type="time"
+                  className="text-gray-200 bg-gray-900"
+                />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="time">Time</Label>
-                  <Input id="time" name="time" value={event.time} onChange={handleInput} type="time" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="image">Event Image</Label>
-                  <Input id="image" name="imageUrl" value={event.imageUrl} onChange={handleInput} type="file" />
-                </div>
+              <div className="grid gap-2">
+                <Label htmlFor="image" className="text-gray-300">Event Image</Label>
+                <Input
+                  id="image"
+                  name="imageUrl"
+                  value={event.imageUrl}
+                  onChange={handleInput}
+                  type="file"
+                  className="text-gray-300 bg-gray-900 file:text-gray-300 file:bg-gray-700 file:border-none"
+                />
               </div>
-              <div className="flex justify-end mt-4">
-                <Button type="submit">Create Event</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </main>
-    </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <Button type="submit" className="bg-blue-600 text-white">Create Event</Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
+  </div>
+  
   )
 }
