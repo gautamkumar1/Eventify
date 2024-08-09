@@ -34,9 +34,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/events" element={<ProtectedRoute element={<Event />} />} />
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
-          <Route path="/admin/create-events" element={<ProtectedRoute element={<CreateEvent />} adminOnly={true} />} />
-          <Route path="/admin/edit-events" element={<ProtectedRoute element={<EditEvent />} adminOnly={true} />} />
-          <Route path="/admin/get-events" element={<ProtectedRoute element={<GetAllEvent />} adminOnly={true} />} />
+         
 
         </Routes>
         <Footer/>

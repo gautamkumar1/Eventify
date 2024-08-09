@@ -10,23 +10,14 @@ export const createEvent = createAsyncThunk(
       throw new Error('Not authenticated');
     }
     try {
-      const response = await axios.post(
-        '/api/events/create-event',
-        eventData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-          },
-        }
-      );
+      const response = await axios.post('/api/events/create-event', eventData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
-      // Handle errors
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -40,23 +31,14 @@ export const editEvent = createAsyncThunk(
       throw new Error('Not authenticated');
     }
     try {
-      const response = await axios.put(
-        `/api/events/edit-event/${id}`, // Use the correct ID in the URL
-        eventData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-          },
-        }
-      );
+      const response = await axios.put(`/api/events/edit-event/${id}`, eventData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
-      // Handle errors
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -72,24 +54,64 @@ export const fetchEvents = createAsyncThunk(
     try {
       const response = await axios.get('/api/events/get-events', {
         headers: {
-          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.events; // Return the events array from the API response
+      return response.data.events;
     } catch (error) {
-      if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
+// Thunk for deleting an event
+export const deleteEvent = createAsyncThunk(
+  'events/deleteEvent',
+  async (id, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Not authenticated');
+    }
+    try {
+      await axios.delete(`/api/events/delete-event/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Thunk for fetching users
+export const fetchUsers = createAsyncThunk(
+  'events/fetchUsers',
+  async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Not authenticated');
+    }
+    try {
+      const response = await axios.get('/api/events/get-users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.users; // Adjust based on your API response
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 const eventsSlice = createSlice({
   name: 'events',
   initialState: {
     events: [],
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    users: [], // Assuming you'll need to handle users in the future
+    status: 'idle',
     error: null,
   },
   reducers: {},
@@ -102,7 +124,7 @@ const eventsSlice = createSlice({
       })
       .addCase(createEvent.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.events.push(action.payload); // Assuming the response is the created event
+        state.events.push(action.payload);
       })
       .addCase(createEvent.rejected, (state, action) => {
         state.status = 'failed';
@@ -118,10 +140,24 @@ const eventsSlice = createSlice({
         state.status = 'succeeded';
         const index = state.events.findIndex(event => event.id === action.payload.event.id);
         if (index !== -1) {
-          state.events[index] = action.payload.event; 
+          state.events[index] = action.payload.event;
         }
       })
       .addCase(editEvent.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+
+      // Handle deleteEvent
+      .addCase(deleteEvent.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.events = state.events.filter(event => event.id !== action.payload);
+      })
+      .addCase(deleteEvent.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       })
@@ -133,14 +169,27 @@ const eventsSlice = createSlice({
       })
       .addCase(fetchEvents.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.events = action.payload; // Assuming the response is an array of events
+        state.events = action.payload;
       })
       .addCase(fetchEvents.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+
+      // Handle fetchUsers
+      .addCase(fetchUsers.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.users = action.payload; // Assuming the response is an array of users
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       });
   },
 });
-
 
 export default eventsSlice.reducer;
