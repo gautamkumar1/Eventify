@@ -56,7 +56,7 @@ export default function Event() {
                         <span>{new Date(event.date).toLocaleDateString()}</span>
                       </div>
                       <Link
-                        to="#"
+                        to="/book-ticket"
                         className="inline-flex items-center justify-center h-10 px-4 rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       >
                         Book Now

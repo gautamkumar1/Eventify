@@ -4,7 +4,7 @@ const { getIo } = require('../socket/socket');
 
 exports.createTicketType = async (req, res) => {
     try {
-        const { eventname,type, price, available } = req.body;
+        const { eventname, type, price, available } = req.body;
         if (!eventname || !type || !price || !available) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -20,25 +20,26 @@ exports.createTicketType = async (req, res) => {
 exports.getTickets = async (req, res) => {
     try {
         const tickets = await Ticket.findAll();
-        res.status(200).json({message: 'All Tickets fetched successfully',
-            data:tickets
+        res.status(200).json({
+            message: 'All Tickets fetched successfully',
+            data: tickets
         });
     } catch (error) {
         console.log(error);
-        res.status(400).json({message: 'All Tickets fetched failed'});
+        res.status(400).json({ message: 'All Tickets fetched failed' });
     }
 };
 
 exports.bookTicket = async (req, res) => {
-    const { ticketId, quantity,price,fullname,paymentStatus,ticketType,event,email } = req.body;
-    if (!ticketId ||!quantity || !price || !fullname || !paymentStatus || !ticketType || !event || !email) {
+    const { ticketId, quantity, price, fullname, ticketType, event, email } = req.body;
+    if (!ticketId || !quantity || !price || !fullname || !ticketType || !event || !email) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
     try {
         const ticket = await Ticket.findByPk(ticketId);
         const debug = !ticket || ticket.available < quantity
         console.log("Debug", debug);
-        
+
         if (!ticket || ticket.available < quantity) {
             return res.status(400).json({ message: 'Not enough tickets available' });
         }
@@ -52,15 +53,16 @@ exports.bookTicket = async (req, res) => {
             quantity,
             price,
             fullname,
-            paymentStatus,
+
             ticketType,
             event,
             email
         });
 
-        res.status(200).json({ message: 'Ticket booked successfully',
+        res.status(200).json({
+            message: 'Ticket booked successfully',
             Book_Ticket: BookedTicketCreated
-         });
+        });
 
         // real-time update to clients
         getIo().emit('ticketUpdate', { ticketId: ticket.id, available: ticket.available });
@@ -68,7 +70,7 @@ exports.bookTicket = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(400).json({ message: 'Ticket booked failed'});
+        res.status(400).json({ message: 'Ticket booked failed' });
     }
 };
 
@@ -82,7 +84,8 @@ exports.getTicketById = async (req, res) => {
             return res.status(404).json({ message: 'Ticket not found' });
         }
 
-        res.status(200).json({ message: 'Ticket found successfully' ,
+        res.status(200).json({
+            message: 'Ticket found successfully',
             ticket: ticket
         });
     } catch (error) {
@@ -131,7 +134,7 @@ exports.updateTicket = async (req, res) => {
         res.status(200).json({ message: 'Ticket updated successfully', ticket });
     } catch (error) {
         console.log(error);
-        
+
         res.status(400).json({ message: 'Ticket updated failed' });
     }
 };

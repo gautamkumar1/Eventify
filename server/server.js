@@ -10,7 +10,7 @@ const oauthRoutes = require('./routes/oauthRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const { initSocket } = require('./socket/socket');
-const paymentRoutes = require('./routes/paymentRoutes');
+const paymentRoutes = require('./routes/stripePayment');
 
 const http = require('http');
 require('./oAuth-Passport/passport');

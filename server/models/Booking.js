@@ -36,10 +36,7 @@ const Booking = sequelize.define('Booking', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    paymentStatus: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
+   
 });
 
 Booking.belongsTo(Ticket, { foreignKey: 'ticketId' });

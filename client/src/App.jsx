@@ -16,6 +16,9 @@ import EditEvent from "./admin/Edit-Event"
 import GetAllEvent from "./admin/GetAllEventTable"
 import Contact from "./pages/Contact"
 import About from "./pages/About"
+import BookTicket from "./admin/BookTicket"
+import SuccesPayment from "./pages/SuccesPayment"
+import FailedPayment from "./pages/FailedPayment"
 
 
 function App() {
@@ -38,6 +41,9 @@ function App() {
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
          <Route path="/contact" element={<Contact/> } />
          <Route path="/about" element={<About/> } />
+         <Route path="/book-ticket" element={<BookTicket/> } />
+         <Route path="/success" element={<SuccesPayment/> } />
+         <Route path="/failed" element={<FailedPayment/> } />
 
         </Routes>
         <Footer/>
