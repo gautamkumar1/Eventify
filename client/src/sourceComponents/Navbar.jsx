@@ -212,14 +212,14 @@ export default function Navbar() {
             Events
           </Link>
           <Link
-            to="#"
+            to="/contact"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
           >
             <MailIcon className="w-5 h-5" />
             Contact
           </Link>
           <Link
-            to="#"
+            to="/about"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
           >
             <InfoIcon className="w-5 h-5" />
@@ -276,14 +276,14 @@ export default function Navbar() {
                 Events
               </Link>
               <Link
-                to="#"
+                to="/contact"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
               >
                 <MailIcon className="w-5 h-5" />
                 Contact
               </Link>
               <Link
-                to="#"
+                to="/about"
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
               >
                 <InfoIcon className="w-5 h-5" />

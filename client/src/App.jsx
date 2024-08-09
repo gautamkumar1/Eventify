@@ -14,6 +14,8 @@ import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute"
 import Event from "./pages/Event"
 import EditEvent from "./admin/Edit-Event"
 import GetAllEvent from "./admin/GetAllEventTable"
+import Contact from "./pages/Contact"
+import About from "./pages/About"
 
 
 function App() {
@@ -34,7 +36,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/events" element={<ProtectedRoute element={<Event />} />} />
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
-         
+         <Route path="/contact" element={<Contact/> } />
+         <Route path="/about" element={<About/> } />
 
         </Routes>
         <Footer/>
