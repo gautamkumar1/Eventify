@@ -6,7 +6,9 @@ import Tables from "./Tables"
 import CreateEvent from "./Create-Event"
 import GetAllEvent from "./GetAllEventTable"
 import GetAllUsers from "./GetAllUser"
-
+import TicketCreationPage from "./CreateTicket"
+import { Ticket } from "lucide-react";
+import GetAllTickets from "./GetAllTickets"
 
 export default function AdminDashboard() {
   return (
@@ -25,6 +27,7 @@ export default function AdminDashboard() {
         </div>
           </Link>
         <nav className="mt-8 space-y-4">
+          {/* Create Event */}
           <Link
             to="/admin/create-events"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
@@ -33,6 +36,16 @@ export default function AdminDashboard() {
             <PlusIcon className="h-5 w-5" />
             Create Event
           </Link>
+          {/* Create Ticket */}
+          <Link
+            to="/admin/create-tickets"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <PlusIcon className="h-5 w-5" />
+            Create Ticket
+          </Link>
+          {/* Get Event */}
           <Link
             to="/admin/get-events"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
@@ -74,6 +87,8 @@ export default function AdminDashboard() {
         <Route path="/" element={<Tables />} />
         <Route path="create-events" element={<CreateEvent />} />
         <Route path="get-events" element={<GetAllEvent />} />
+        <Route path="create-tickets" element={<TicketCreationPage />} />
+        <Route path="get-tickets" element={<GetAllTickets />} />
         {/* <Route path="get-users" element={<GetAllUsers />} /> */}
         
     </Routes>
