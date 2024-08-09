@@ -4,7 +4,6 @@ import { Card, CardContent } from "../../components/ui/card";
 import MusicImage from "../assets/Music.png";
 import ArtImage from "../assets/Art.png";
 
-
 export default function Event() {
   return (
     <div className="flex flex-col min-h-dvh">
