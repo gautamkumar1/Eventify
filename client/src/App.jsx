@@ -19,6 +19,7 @@ import About from "./pages/About"
 import BookTicket from "./admin/BookTicket"
 import SuccesPayment from "./pages/SuccesPayment"
 import FailedPayment from "./pages/FailedPayment"
+import UserDashboard from "./User/UserDashboard"
 // import GetAllUsers from "./admin/GetAllUser"
 
 
@@ -45,7 +46,7 @@ function App() {
          <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } />
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
-         {/* <Route path="/get-users" element={<GetAllUsers />} /> */}
+         <Route path="/userdashboard" element={<ProtectedRoute element={<UserDashboard/>} /> } />
         </Routes>
         <Footer/>
       </BrowserRouter>
