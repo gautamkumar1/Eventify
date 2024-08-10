@@ -29,6 +29,7 @@ const BookTicket = () => {
     });
   };
 
+
   const onToken = async (token) => {
     console.log(token);
     const dataWithToken = { ...formData, token };
@@ -143,14 +144,18 @@ const BookTicket = () => {
         >
           {status === 'loading' ? 'Booking...' : 'Book Ticket'}
         </button> */}
-
-        {status === 'failed' && <p className="text-red-500 mt-4">Error: {error}</p>}
-      </form>
-      <Button>Book Ticket</Button>
-      <StripeCheckout
+        <div className='flex items-center justify-center'>
+        <StripeCheckout
         token={onToken}
         stripeKey="pk_test_51PTZieP9lvJdVilSFGGLEcIIUwEhr3zb6m9x0eFtdPCnI2mQwImEjuzQfctij8tIStYqvV3ybBFLdy8qJadMHn7600z3Zj30Yb"
-      />
+      >
+        <Button>Book Ticket</Button>
+      </StripeCheckout>
+        </div>
+        {status === 'failed' && <p className="text-red-500 mt-4">Error: {error}</p>}
+      </form>
+      
+     
     </div>
   );
 };

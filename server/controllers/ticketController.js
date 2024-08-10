@@ -32,6 +32,7 @@ exports.getTickets = async (req, res) => {
     }
 };
 
+
 exports.getTicketById = async (req, res) => {
     const { id } = req.params;
 
@@ -97,63 +98,18 @@ exports.updateTicket = async (req, res) => {
     }
 };
 
-
-// exports.bookTicket = async (req, res) => {
-//     const { quantity, price, fullname, ticketType, event, email } = req.body;
-
-//     if (!quantity || !price || !fullname || !ticketType || !event || !email) {
-//         return res.status(400).json({ message: 'Missing required fields' });
-//     }
-
-//     try {
-//         // Find a ticket based on some criteria (e.g., availability and event)
-//         const ticket = await Ticket.findOne({
-//             where: {
-//                 available: {
-//                     [Op.gte]: quantity // Ensure there are enough tickets available
-//                 },
-//                 eventname: event 
-//             }
-//         });
-
-
-//         if (!ticket) {
-//             return res.status(400).json({ message: 'No suitable tickets available' });
-//         }
-
-//         // Deduct the number of tickets booked
-//         ticket.available -= quantity;
-//         await ticket.save();
-
-//         // Create a new booking record
-//         const bookedTicket = await Booking.create({
-//             ticketId: ticket.id, // Use the found ticket ID
-//             fullname,
-//             email,
-//             event,
-//             ticketType,
-//             quantity,
-//             price,
-//             userId: req.user.id, // Assuming req.user.id is available for the authenticated user
-//         });
-
-//         // Send success response
-//         res.status(200).json({
-//             message: 'Ticket booked successfully',
-//             bookedTicket, // Return the created booking record
-//         });
-
-//         // Emit real-time update to clients
-//         getIo().emit('ticketUpdate', { ticketId: ticket.id, available: ticket.available });
-
-//     } catch (error) {
-//         console.error('Error booking ticket:', error);
-//         res.status(500).json({ message: 'Ticket booking failed' });
-//     }
-// };
-
-
-
+exports.getBookedTickets = async (req, res) => {
+    try {
+        const bookedTickets = await Booking.findAll();
+        res.status(200).json({
+            message: 'All Booked Tickets fetched successfully',
+            data: bookedTickets
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: 'All Booked Tickets fetched failed' });
+    }
+};
 exports.bookTicket = async (req, res) => {
     const { quantity, price, fullname, ticketType, event, email, token } = req.body;
 

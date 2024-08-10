@@ -1,6 +1,6 @@
 const express = require('express');
 const { isAuthenticated,isAuthorized } = require('../middlewares/AuthMiddleware');
-const { bookTicket, getTickets, createTicketType, getTicketById, updateTicket, deleteTicket } = require('../controllers/ticketController');
+const { bookTicket, getTickets, createTicketType, getTicketById, updateTicket, deleteTicket, getBookedTickets } = require('../controllers/ticketController');
 const router = express.Router();
 
 
@@ -10,6 +10,6 @@ router.get('/get-tickets', isAuthenticated,getTickets);
 router.get('/getbyid-tickets/:id', isAuthenticated,getTicketById);
 router.put('/update-tickets/:id', isAuthenticated,isAuthorized(),updateTicket)
 router.delete('/delete-tickets/:id',isAuthenticated,isAuthorized(),deleteTicket)
-
+router.get('/booked-tickets', isAuthenticated,getBookedTickets);
 
 module.exports = router;
