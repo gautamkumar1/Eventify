@@ -16,7 +16,7 @@ import EditEvent from "./admin/Edit-Event"
 import GetAllEvent from "./admin/GetAllEventTable"
 import Contact from "./pages/Contact"
 import About from "./pages/About"
-import BookTicket from "./admin/BookTicket"
+
 import SuccesPayment from "./pages/SuccesPayment"
 import FailedPayment from "./pages/FailedPayment"
 import UserDashboard from "./User/UserDashboard"
@@ -48,7 +48,7 @@ function App() {
          {/* <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } /> */}
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
-         <Route path="/userdashboard/*" element={<ProtectedRoute element={<UserDashboard/>} /> } />
+         <Route path="/userdashboard/*" element={<ProtectedRoute element={<UserDashboard/> }/> } />
          <Route path="/book-ticket" element={<ProtectedRoute element={<TicketBookPage/>} /> } />
         </Routes>
         <Footer/>

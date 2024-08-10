@@ -33,7 +33,7 @@ import Cookies from "js-cookie";
 //     logout({ returnTo: window.location.origin });
 //   };
 
-  
+
 
 //   const showLogoutButton = true;
 
@@ -75,7 +75,7 @@ import Cookies from "js-cookie";
 //           </Link>
 //           {isLoggedIn ? (
 //             <button
-              
+
 //               className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
 //             >
 //               <LogInIcon className="w-5 h-5" />
@@ -183,7 +183,7 @@ export default function Navbar() {
     toast.success('Logout successful');
     navigate('/login');
   };
-  
+
 
   const handleOAuthLogout = () => {
     logout({ returnTo: window.location.origin });
@@ -226,13 +226,24 @@ export default function Navbar() {
             About
           </Link>
           {isLoggedIn || isAuthenticated ? (
-            <button
-              onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-            >
-              <LogInIcon className="w-5 h-5" />
-              Logout
-            </button>
+            <>
+              <Link
+                to="/userdashboard"
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <UsersIcon className="w-5 h-5" />
+                User Dashboard
+              </Link>
+              <button
+                onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+              >
+                <LogInIcon className="w-5 h-5" />
+                Logout
+              </button>
+
+
+            </>
           ) : (
             <>
               <Link
@@ -290,13 +301,25 @@ export default function Navbar() {
                 About
               </Link>
               {isLoggedIn || isAuthenticated ? (
-                <button
-                  onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                >
-                  <LogInIcon className="w-5 h-5" />
-                  Logout
-                </button>
+                <>
+
+                  <Link
+                    to="/userdashboard"
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <UsersIcon className="w-5 h-5" />
+                    User Dashboard
+                  </Link>
+                  <button
+                    onClick={isAuthenticated ? handleOAuthLogout : handleLogout}
+                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogInIcon className="w-5 h-5" />
+                    Logout
+                  </button>
+
+
+                </>
               ) : (
                 <>
                   <Link
@@ -468,6 +491,28 @@ function MountainIcon(props) {
       strokeLinejoin="round"
     >
       <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+    </svg>
+  )
+}
+
+function UsersIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   )
 }
