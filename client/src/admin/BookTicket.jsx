@@ -37,7 +37,7 @@ export default function BookTicket() {
         const headers = {
             "Content-Type":"application/json"
         }
-        const response = await fetch("http://localhost:4242/create-checkout-session",{
+        const response = await fetch("http://localhost:3000/create-checkout-session",{
             method:"POST",
             headers:headers,
             body:JSON.stringify(body)

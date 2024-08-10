@@ -81,3 +81,48 @@ exports.getAllUsersData = async (req, res) => {
     res.status(500).json({ message: 'Error fetching users data' });
   }
 }
+
+exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { username, email, isAdmin } = req.body;
+
+  try {
+      const user = await User.findByPk(id);
+
+      if (!user) {
+          return res.status(404).send({ error: 'User not found' });
+      }
+
+      user.username = username || user.username;
+      user.email = email || user.email;
+      user.isAdmin = typeof isAdmin === 'boolean' ? isAdmin : user.isAdmin;
+
+      await user.save();
+
+      res.status(200).send({ message: 'User updated successfully', user });
+  } catch (error) {
+      console.error('Error updating user:', error);
+      res.status(500).send({ error: 'Failed to update user' });
+  }
+};
+
+
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const user = await User.findByPk(id);
+
+      if (!user) {
+          return res.status(404).send({ error: 'User not found' });
+      }
+
+      await user.destroy();
+
+      res.status(200).send({ message: 'User deleted successfully' });
+  } catch (error) {
+      console.error('Error deleting user:', error);
+      res.status(500).send({ error: 'Failed to delete user' });
+  }
+};
+
