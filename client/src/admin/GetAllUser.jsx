@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
-import { fetchUsers } from "../redux/event/eventsSlice"; // Adjust import based on your actual slice
+import { fetchUsers, deleteUser, updateUser } from "../redux/event/eventsSlice"; 
+import UserEditModal from "../sourceComponents/UserEditModal"; 
 
 export default function GetAllUsers() {
   const dispatch = useDispatch();
-  const { users, status, error } = useSelector((state) => state.users);
+  const { users, status, error } = useSelector((state) => state.events);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // console.log("Users: " + users);
+  
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
@@ -17,6 +19,20 @@ export default function GetAllUsers() {
   const handleEdit = (user) => {
     setSelectedUser(user);
     setIsModalOpen(true);
+  };
+
+  const handleDelete = async (user) => {
+    const confirm = window.confirm(`Are you sure you want to delete the user: ${user.username}?`);
+    if (confirm) {
+      try {
+        await dispatch(deleteUser(user.id)).unwrap(); // Unwrap to get the resolved value
+        alert('User deleted successfully');
+        dispatch(fetchUsers()); // Refresh users after deletion
+      } catch (err) {
+        console.error('Failed to delete user:', err);
+        alert('Failed to delete the user');
+      }
+    }
   };
 
   const handleModalClose = () => {
@@ -54,19 +70,23 @@ export default function GetAllUsers() {
                   <Button size="sm" variant="outline" onClick={() => handleEdit(user)}>
                     Edit
                   </Button>
+                  <Button size="sm" variant="destructive" onClick={() => handleDelete(user)}>
+                    Delete
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {/* {selectedUser && (
+      {selectedUser && (
         <UserEditModal
           user={selectedUser}
           isOpen={isModalOpen}
           onClose={handleModalClose}
+          onUpdate={(updatedUser) => dispatch(updateUser({ id: selectedUser.id, userData: updatedUser }))}
         />
-      )} */}
+      )}
     </div>
   );
 }

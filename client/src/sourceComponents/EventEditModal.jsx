@@ -1,4 +1,4 @@
-// components/EventEditModal.jsx
+
 import { useState } from 'react';
 import { Button } from "../../components/ui/button";
 import { useDispatch } from 'react-redux';

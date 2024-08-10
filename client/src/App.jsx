@@ -19,6 +19,7 @@ import About from "./pages/About"
 import BookTicket from "./admin/BookTicket"
 import SuccesPayment from "./pages/SuccesPayment"
 import FailedPayment from "./pages/FailedPayment"
+// import GetAllUsers from "./admin/GetAllUser"
 
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
          <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } />
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
-
+         {/* <Route path="/get-users" element={<GetAllUsers />} /> */}
         </Routes>
         <Footer/>
       </BrowserRouter>

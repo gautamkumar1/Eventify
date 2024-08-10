@@ -5,10 +5,11 @@ import { Button } from "../../components/ui/button"
 import Tables from "./Tables"
 import CreateEvent from "./Create-Event"
 import GetAllEvent from "./GetAllEventTable"
-import GetAllUsers from "./GetAllUser"
 import TicketCreationPage from "./CreateTicket"
 
 import GetAllTickets from "./GetAllTickets"
+import GetAllUsers from "./GetAllUser"
+
 
 export default function AdminDashboard() {
   return (
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
             View All Tickets
           </Link>
           <Link
-            to="#"
+            to="/admin/get-users"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
@@ -92,7 +93,7 @@ export default function AdminDashboard() {
         <Route path="get-events" element={<GetAllEvent />} />
         <Route path="create-tickets" element={<TicketCreationPage />} />
         <Route path="get-tickets" element={<GetAllTickets />} />
-        {/* <Route path="get-users" element={<GetAllUsers />} /> */}
+        <Route path="get-users" element={<GetAllUsers />} />
         
     </Routes>
 
