@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
-import { fetchEvents, deleteEvent } from "../redux/event/eventsSlice"; 
+import { fetchEvents, deleteEvent, editEvent } from "../redux/event/eventsSlice"; 
 import EventEditModal from "../sourceComponents/EventEditModal"; 
 
 export default function GetAllEvent() {
@@ -21,8 +21,6 @@ export default function GetAllEvent() {
   };
 
   const handleDelete = async (event) => {
-    console.log("event.id: "+event.id);
-    
     const confirm = window.confirm(`Are you sure you want to delete the event: ${event.title}?`);
     if (confirm) {
       try {
@@ -33,6 +31,19 @@ export default function GetAllEvent() {
         console.error('Failed to delete event:', err);
         alert('Failed to delete the event');
       }
+    }
+  };
+
+  const handleUpdate = async (updatedEvent) => {
+    try {
+      await dispatch(editEvent({ id: selectedEvent.id, eventData: updatedEvent })).unwrap();
+      alert('Event updated successfully');
+      setIsModalOpen(false);
+      setSelectedEvent(null);
+      dispatch(fetchEvents()); // Refresh events after updating
+    } catch (err) {
+      console.error('Failed to update event:', err);
+      alert('Failed to update the event');
     }
   };
 
@@ -100,6 +111,7 @@ export default function GetAllEvent() {
           event={selectedEvent}
           isOpen={isModalOpen}
           onClose={handleModalClose}
+          onUpdate={handleUpdate}
         />
       )}
     </div>

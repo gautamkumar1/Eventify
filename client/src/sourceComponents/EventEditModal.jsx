@@ -1,19 +1,32 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "../../components/ui/button";
 import { useDispatch } from 'react-redux';
 import { editEvent } from '../redux/event/eventsSlice';
+import { toast } from 'react-toastify';
 
 const EventEditModal = ({ event, isOpen, onClose }) => {
   const [formData, setFormData] = useState({
-    title: event.title,
-    description: event.description,
-    location: event.location,
-    date: event.date,
-    time: event.time,
-    imageUrl: event.imageUrl,
+    title: '',
+    description: '',
+    location: '',
+    date: '',
+    time: '',
+    imageUrl: '',
   });
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (event) {
+      setFormData({
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        date: event.date.split('T')[0], // Extract date part
+        time: event.time,
+        imageUrl: event.imageUrl,
+      });
+    }
+  }, [event]);
 
   const handleChange = (e) => {
     setFormData({
@@ -22,10 +35,16 @@ const EventEditModal = ({ event, isOpen, onClose }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(editEvent({ id: event.id, eventData: formData }));
-    onClose(); // Close the modal after submitting
+    try {
+      await dispatch(editEvent({ id: event.id, eventData: formData })).unwrap();
+      toast.success('Event updated successfully');
+      onClose(); // Close the modal after submitting
+    } catch (err) {
+      console.error('Failed to update event:', err);
+      // toast.error('Failed to update the event');
+    }
   };
 
   if (!isOpen) return null;
@@ -82,7 +101,7 @@ const EventEditModal = ({ event, isOpen, onClose }) => {
               <input
                 type="date"
                 name="date"
-                value={formData.date.split('T')[0]} // Extract date part
+                value={formData.date}
                 onChange={handleChange}
                 required
                 className="w-full p-3 border border-gray-600 rounded bg-gray-900 text-white placeholder-gray-500"

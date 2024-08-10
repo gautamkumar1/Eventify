@@ -37,15 +37,7 @@ export default function AdminDashboard() {
             <PlusIcon className="h-5 w-5" />
             Create Event
           </Link>
-          {/* Create Ticket */}
-          <Link
-            to="/admin/create-tickets"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            prefetch={false}
-          >
-            <PlusIcon className="h-5 w-5" />
-            Create Ticket
-          </Link>
+          
           {/* Get Event */}
           <Link
             to="/admin/get-events"
@@ -56,6 +48,15 @@ export default function AdminDashboard() {
             View All Events
           </Link>
           {/* Get Tickets */}
+          {/* Create Ticket */}
+          <Link
+            to="/admin/create-tickets"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <PlusIcon className="h-5 w-5" />
+            Create Ticket
+          </Link>
           <Link
             to="/admin/get-tickets"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
