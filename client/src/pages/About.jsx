@@ -2,6 +2,9 @@
 import { Link } from "react-router-dom"
 import { Avatar, AvatarImage, AvatarFallback } from "../../components/ui/avatar"
 import EventImage from "../assets/EventWebsiteImage.png"
+import MyImage from "../assets/My pic.jpg"
+import Hinata from "../assets/Hinata.jpg"
+import Itachi from "../assets/Itachi.jpg"
 export default function About() {
     return (
         <div className="flex flex-col min-h-[100dvh]">
@@ -60,42 +63,42 @@ export default function About() {
                     <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
                         <div className="flex flex-col items-center justify-center space-y-4">
                             <Avatar className="w-24 h-24 border">
-                                <AvatarImage src="/placeholder-user.jpg" alt="Jane Doe" />
-                                <AvatarFallback>JD</AvatarFallback>
+                                <AvatarImage src={MyImage} alt="Gautam Kumar" />
+                                <AvatarFallback>GK</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1 text-center">
-                                <h3 className="text-xl font-bold">Jane Doe</h3>
+                                <h3 className="text-xl font-bold">Gautam Kumar</h3>
                                 <p className="text-muted-foreground">Event Planner</p>
                                 <p className="text-sm text-muted-foreground">
-                                    Jane has over 10 years of experience in the event planning industry, specializing in corporate events
+                                    Gautam has over 10 years of experience in the event planning industry, specializing in corporate events
                                     and weddings.
                                 </p>
                             </div>
                         </div>
                         <div className="flex flex-col items-center justify-center space-y-4">
                             <Avatar className="w-24 h-24 border">
-                                <AvatarImage src="/placeholder-user.jpg" alt="John Smith" />
-                                <AvatarFallback>JS</AvatarFallback>
+                                <AvatarImage src={Hinata} alt="Hinata Hyuga" />
+                                <AvatarFallback>HH</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1 text-center">
-                                <h3 className="text-xl font-bold">John Smith</h3>
+                                <h3 className="text-xl font-bold">Hinata Hyuga</h3>
                                 <p className="text-muted-foreground">Venue Coordinator</p>
                                 <p className="text-sm text-muted-foreground">
-                                    John has a keen eye for detail and a passion for finding the perfect venue to match our clients'
+                                Hinata has a keen eye for detail and a passion for finding the perfect venue to match our clients'
                                     needs.
                                 </p>
                             </div>
                         </div>
                         <div className="flex flex-col items-center justify-center space-y-4">
                             <Avatar className="w-24 h-24 border">
-                                <AvatarImage src="/placeholder-user.jpg" alt="Sarah Lee" />
-                                <AvatarFallback>SL</AvatarFallback>
+                                <AvatarImage src={Itachi} alt="Itachi Uchiha" />
+                                <AvatarFallback>IH</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1 text-center">
-                                <h3 className="text-xl font-bold">Sarah Lee</h3>
+                                <h3 className="text-xl font-bold">Itachi Uchiha</h3>
                                 <p className="text-muted-foreground">Catering Specialist</p>
                                 <p className="text-sm text-muted-foreground">
-                                    Sarah's expertise in curating delicious and visually stunning menus has made her an invaluable member
+                                Itachi expertise in curating delicious and visually stunning menus has made her an invaluable member
                                     of our team.
                                 </p>
                             </div>

@@ -48,7 +48,7 @@ export default function Contact() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold">Contact Information</h3>
                 <div className="space-y-1 text-muted-foreground">
-                  <p>123 Main St, Anytown USA</p>
+                  <p>Sector-22 Noida UP, India</p>
                   <p>Phone: +919572898131</p>
                   <p>Email: gautam@example.com</p>
                 </div>
