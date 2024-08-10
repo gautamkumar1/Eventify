@@ -1,151 +1,158 @@
+/* eslint-disable no-unused-vars */
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { bookTicket } from '../redux/bookTicket/bookTicketSlice';
+import { toast } from 'react-toastify';
+import { loadStripe } from '@stripe/stripe-js';
+import StripeCheckout from 'react-stripe-checkout';
+import { Button } from '../../components/ui/button';
+// const stripePromise = loadStripe('pk_test_51PTZieP9lvJdVilSFGGLEcIIUwEhr3zb6m9x0eFtdPCnI2mQwImEjuzQfctij8tIStYqvV3ybBFLdy8qJadMHn7600z3Zj30Yb'); // Replace with your Stripe publishable key
 
-import { Label } from "../../components/ui/label"
-import { Input } from "../../components/ui/input"
-import { Button } from "../../components/ui/button"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table"
-import { useState } from "react"
-import { loadStripe } from "@stripe/stripe-js"
+const BookTicket = () => {
+  const dispatch = useDispatch();
+  const { status, error, sessionId } = useSelector((state) => state.tickets);
 
-export default function BookTicket() {
-    const [book,setBook] = useState({
-        ticketId: "",
-        fullname: "",
-        email: "",
-        eventname: "",
-        ticketType: "",
-        quantity:0,
-        price: 0,
-    })
-    const handleInput = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
-        setBook({ ...book, [name]: value });
-        // console.log("Updated Book Data:", { ...book, [name]: value });
-      };
-    //   const handleBookTicket = () => {
-    //     console.log("Final Book Data Before Submission:", book);
-    //     // Dispatch the bookTickets thunk here if needed
-    //     // dispatch(bookTickets(book));
-    // };
+  const [formData, setFormData] = useState({
+    quantity: '',
+    price: '',
+    fullname: '',
+    ticketType: '',
+    event: '',
+    email: ''
+  });
 
-    const makePayment = async()=>{
-        const stripe = await loadStripe("pk_test_51PTZieP9lvJdVilSFGGLEcIIUwEhr3zb6m9x0eFtdPCnI2mQwImEjuzQfctij8tIStYqvV3ybBFLdy8qJadMHn7600z3Zj30Yb");
+  // Handle change in form input
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-        const body = {
-            bookData:book
-        }
-        const headers = {
-            "Content-Type":"application/json"
-        }
-        const response = await fetch("http://localhost:3000/create-checkout-session",{
-            method:"POST",
-            headers:headers,
-            body:JSON.stringify(body)
-        });
+  const onToken = async (token) => {
+    console.log(token);
+    const dataWithToken = { ...formData, token };
+    try {
+      dispatch(bookTicket(dataWithToken));
+      toast.success("Ticket Booking Successful");
+      setFormData({
+        quantity: '',
+        price: '',
+        fullname: '',
+        ticketType: '',
+        event: '',
+        email: ''
+      })
+    } catch (error) {
+      console.log(error);
 
-        const session = await response.json();
-
-        const result = stripe.redirectToCheckout({
-            sessionId:session.id
-        });
-        
-        if(result.error){
-            console.log(result.error);
-        }
     }
+  }
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-background rounded-lg shadow-lg p-6 sm:p-8 lg:p-10">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">Ticket Booking</h2>
-          <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="ticket-id">Ticket ID</Label>
-              <Input id="ticket-id" name="ticketId" value={book.ticketId} onChange={handleInput} placeholder="Enter ticket ID" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="full-name">Full Name</Label>
-              <Input id="full-name" name="fullname" value={book.fullname} onChange={handleInput} placeholder="Enter your full name" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" name="email" value={book.email} onChange={handleInput} placeholder="Enter your email" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="event-name">Event Name</Label>
-              <Input id="event-name" name="eventname" value={book.eventname} onChange={handleInput} placeholder="Enter event name" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="event-name">Ticket Type</Label>
-              <Input id="ticket-type" name="ticketType" value={book.ticketType} onChange={handleInput} placeholder="Enter event ticket type" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="price">Price</Label>
-              <Input id="price" name="price" type="number" value={book.price} onChange={handleInput} placeholder="Enter ticket price" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="quantity">Quantity</Label>
-              <Input id="quantity" name="quantity" type="number" value={book.quantity} onChange={handleInput} placeholder="Enter quantity" />
-            </div>
-            <div className="col-span-2 flex justify-end">
-              <Button type="button" onClick={makePayment} className="w-full sm:w-auto">
-                Book Ticket
-              </Button>
-            </div>
-          </form>
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 p-4">
+      <form
+
+        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-lg"
+      >
+        <h2 className="text-2xl font-semibold text-white mb-6">Book Your Ticket</h2>
+
+        {/* Form Fields */}
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Quantity:</label>
+          <input
+            type="number"
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter quantity"
+          />
         </div>
-        <div className="bg-background rounded-lg shadow-lg p-6 sm:p-8 lg:p-10">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">Available Tickets</h2>
-          <div className="overflow-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Ticket ID</TableHead>
-                  <TableHead>Full Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Event Name</TableHead>
-                  <TableHead>Ticket Type</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Quantity</TableHead>
-                  <TableHead>Payment Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>TKT001</TableCell>
-                  <TableCell>John Doe</TableCell>
-                  <TableCell>john@example.com</TableCell>
-                  <TableCell>Music Festival</TableCell>
-                  <TableCell>General Admission</TableCell>
-                  <TableCell>$50.00</TableCell>
-                  <TableCell>2</TableCell>
-                  <TableCell>Paid</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>TKT002</TableCell>
-                  <TableCell>Jane Smith</TableCell>
-                  <TableCell>jane@example.com</TableCell>
-                  <TableCell>Art Exhibition</TableCell>
-                  <TableCell>VIP</TableCell>
-                  <TableCell>$100.00</TableCell>
-                  <TableCell>1</TableCell>
-                  <TableCell>Pending</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>TKT003</TableCell>
-                  <TableCell>Bob Johnson</TableCell>
-                  <TableCell>bob@example.com</TableCell>
-                  <TableCell>Comedy Show</TableCell>
-                  <TableCell>Student</TableCell>
-                  <TableCell>$25.00</TableCell>
-                  <TableCell>3</TableCell>
-                  <TableCell>Unpaid</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter price"
+          />
         </div>
-      </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Full Name:</label>
+          <input
+            type="text"
+            name="fullname"
+            value={formData.fullname}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter your full name"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Ticket Type:</label>
+          <input
+            type="text"
+            name="ticketType"
+            value={formData.ticketType}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter ticket type"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Event:</label>
+          <input
+            type="text"
+            name="event"
+            value={formData.event}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter event name"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-300 mb-2">Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
+            placeholder="Enter your email"
+          />
+        </div>
+
+        {/* Submit Button */}
+        {/* <button 
+          type="submit" 
+          disabled={status === 'loading'}
+          className={`w-full py-3 rounded-lg text-white ${status === 'loading' ? 'bg-gray-600' : 'bg-blue-600 hover:bg-blue-700'} transition`}
+        >
+          {status === 'loading' ? 'Booking...' : 'Book Ticket'}
+        </button> */}
+
+        {status === 'failed' && <p className="text-red-500 mt-4">Error: {error}</p>}
+      </form>
+      <Button>Book Ticket</Button>
+      <StripeCheckout
+        token={onToken}
+        stripeKey="pk_test_51PTZieP9lvJdVilSFGGLEcIIUwEhr3zb6m9x0eFtdPCnI2mQwImEjuzQfctij8tIStYqvV3ybBFLdy8qJadMHn7600z3Zj30Yb"
+      />
     </div>
-  )
-}
+  );
+};
+
+export default BookTicket;

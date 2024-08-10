@@ -1,57 +1,47 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Create the bookTickets thunk
-export const bookTickets = createAsyncThunk(
-  'tickets/bookTickets',
+// Define the bookTicket thunk
+export const bookTicket = createAsyncThunk(
+  'tickets/bookTicket',
   async (ticketData, { rejectWithValue }) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Not authenticated');
-    }
     try {
-      const response = await axios.post('/api/ticket/book-tickets', ticketData,{
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      });
-      return response.data;
+      const response = await axios.post('/api/ticket/book-tickets', ticketData);
+      return response.data; // This should include sessionId
     } catch (error) {
-      if (error.response && error.response.data) {
-        
-        return rejectWithValue(error.response.data);
-      } else {
-        
-        return rejectWithValue('An error occurred while booking the tickets');
-      }
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
+// Define the initial state
+const initialState = {
+  booking: null,
+  sessionId: null, // Add sessionId to the state
+  status: 'idle',
+  error: null,
+};
 
-const bookTicketsSlice = createSlice({
-    name: 'tickets',
-    initialState: {
-      bookingStatus: 'idle',
-      bookingError: null,
-      bookingResponse: null,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-      builder
-        .addCase(bookTickets.pending, (state) => {
-          state.bookingStatus = 'loading';
-          state.bookingError = null;
-        })
-        .addCase(bookTickets.fulfilled, (state, action) => {
-          state.bookingStatus = 'succeeded';
-          state.bookingResponse = action.payload;
-        })
-        .addCase(bookTickets.rejected, (state, action) => {
-          state.bookingStatus = 'failed';
-          state.bookingError = action.payload;
-        });
-    },
-  });
-  
-  export default bookTicketsSlice.reducer;
+// Create the slice
+const ticketSlice = createSlice({
+  name: 'tickets',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(bookTicket.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(bookTicket.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.booking = action.payload.Book_Ticket;
+        state.sessionId = action.payload.sessionId; // Store sessionId in the state
+      })
+      .addCase(bookTicket.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
+  },
+});
+
+export default ticketSlice.reducer;
