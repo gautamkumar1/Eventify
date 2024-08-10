@@ -41,7 +41,7 @@ function App() {
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
          <Route path="/contact" element={<Contact/> } />
          <Route path="/about" element={<About/> } />
-         <Route path="/book-ticket" element={<BookTicket/> } />
+         <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } />
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
 
