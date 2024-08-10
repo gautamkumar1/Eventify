@@ -54,6 +54,15 @@ export default function AdminDashboard() {
             <ListIcon className="h-5 w-5" />
             View All Events
           </Link>
+          {/* Get Tickets */}
+          <Link
+            to="/admin/get-tickets"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <ListIcon className="h-5 w-5" />
+            View All Tickets
+          </Link>
           <Link
             to="#"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
@@ -73,13 +82,7 @@ export default function AdminDashboard() {
             </Button>
             <h2 className="text-lg font-semibold">Dashboard</h2>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm">
-              <SearchIcon className="h-5 w-5 text-muted-foreground" />
-              <input type="text" placeholder="Search..." className="bg-transparent focus:outline-none" />
-            </div>
-            
-          </div>
+          
         </header>
         {/* Main Content */}
         

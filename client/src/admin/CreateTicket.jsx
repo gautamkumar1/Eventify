@@ -19,10 +19,6 @@ const TicketCreationPage = () => {
   const { status, error } = useSelector((state) => state.tickets);
 
   useEffect(() => {
-    if (status === "succeeded") {
-      toast.success("Ticket created successfully");
-      setTicket({ eventname: "", type: "", price: 0, available: 0 });
-    }
     if (status === "failed" && error) {
       toast.error("Create ticket failed: " + error);
     }
@@ -37,6 +33,8 @@ const TicketCreationPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(createTicket(ticket));
+    toast.success("Ticket created successfully");
+      setTicket({ eventname: "", type: "", price: 0, available: 0 });
   };
 
   return (

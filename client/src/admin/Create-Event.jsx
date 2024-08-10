@@ -19,28 +19,17 @@ export default function CreateEvent() {
     time: "",
     imageUrl: ""
   })
-  const [eventCreated, setEventCreated] = useState(false);
+  
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.events);
-  const [isEventToast, setIsEventToast] = useState(false);
-  if(eventCreated && status === "succeeded"){
-    setIsEventToast(true);
-    setEventCreated(false);
-  }
-   if(isEventToast){
-      toast.success("Event created successfully")
-      setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
-    }
+  
+ 
   useEffect(()=>{
     if(error){
       toast.error("Create event failed")
     }
 
-    if(isEventToast){
-      toast.success("Event created successfully")
-      setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
-    }
-  },[status, error])
+  },[error])
 
 
   const handleInput = (e) => {
@@ -56,6 +45,8 @@ export default function CreateEvent() {
     
     // Dispatch the createEvent action with the formData
     dispatch(createEvent(event));
+    toast.success("Event created successfully")
+    setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
   };
   return (
     <div className="flex flex-col min-h-dvh">
