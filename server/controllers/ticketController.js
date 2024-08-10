@@ -110,6 +110,8 @@ exports.getBookedTickets = async (req, res) => {
         res.status(400).json({ message: 'All Booked Tickets fetched failed' });
     }
 };
+
+
 exports.bookTicket = async (req, res) => {
     const { quantity, price, fullname, ticketType, event, email, token } = req.body;
 
@@ -155,13 +157,12 @@ exports.bookTicket = async (req, res) => {
                 quantity,
                 price,
                 userId: req.user.id, // Assuming req.user.id is available for the authenticated user
-                paymentStatus: 'pending', // Set initial payment status to 'pending'
             });
 
             getIo().emit('ticketUpdate', { ticketId: ticket.id, available: ticket.available });
 
         }
-        res.send("Payment Successful")
+        res.send("Payment Successful !! Ticket Booked Successfully")
 
     } catch (error) {
         console.log(error);
@@ -235,4 +236,32 @@ exports.bookTicket = async (req, res) => {
     //     console.error('Error booking ticket:', error);
     //     res.status(500).json({ message: 'Ticket booking failed' });
     // }
+};
+
+
+exports.getBookedTicketsByUserId = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const bookings = await Booking.findAll({
+            where: {
+                userId: userId
+            },
+            include: [
+                {
+                    model: Ticket, 
+                    attributes: ['eventname', 'available'] 
+                }
+            ]
+        });
+
+        if (!Array.isArray(bookings) || bookings.length === 0) {
+            return res.status(404).json({ message: 'No bookings found for this user.' });
+        }
+
+        res.status(200).json({ bookings });
+
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).json({ message: 'Error fetching bookings' });
+    }
 };

@@ -20,6 +20,8 @@ import BookTicket from "./admin/BookTicket"
 import SuccesPayment from "./pages/SuccesPayment"
 import FailedPayment from "./pages/FailedPayment"
 import UserDashboard from "./User/UserDashboard"
+import TicketBookPage from "./admin/TicketBookPage"
+import GetBookTicket from "./User/GetBookTicket"
 // import GetAllUsers from "./admin/GetAllUser"
 
 
@@ -43,10 +45,11 @@ function App() {
           <Route path="/admin/*" element={<ProtectedRoute element={<AdminDashboard />} adminOnly={true} />} />
          <Route path="/contact" element={<Contact/> } />
          <Route path="/about" element={<About/> } />
-         <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } />
+         {/* <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } /> */}
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
-         <Route path="/userdashboard" element={<ProtectedRoute element={<UserDashboard/>} /> } />
+         <Route path="/userdashboard/*" element={<ProtectedRoute element={<UserDashboard/>} /> } />
+         <Route path="/book-ticket" element={<ProtectedRoute element={<TicketBookPage/>} /> } />
         </Routes>
         <Footer/>
       </BrowserRouter>

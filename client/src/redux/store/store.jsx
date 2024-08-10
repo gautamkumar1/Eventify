@@ -4,11 +4,13 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import authReducer from '../auth/authSlice';
 import eventsSlice from '../event/eventsSlice';
 import ticketsSlice from '../tickets/ticketsSlice';
+import bookTicketSlice from '../bookTicket/bookTicketSlice';
 // Combine all reducers
 const rootReducer = combineReducers({
   auth: authReducer,
   events: eventsSlice,
-  tickets:ticketsSlice
+  tickets:ticketsSlice,
+  bookTicket: bookTicketSlice, 
 });
 
 // Configuration for Redux Persist

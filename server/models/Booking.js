@@ -1,13 +1,21 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/Db');
 const Ticket = require('./Ticket');
-
+const User = require('./User');
 const Booking = sequelize.define('Booking', {
     ticketId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Ticket,
+            key: 'id',
+        },
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
             key: 'id',
         },
     },
@@ -36,14 +44,11 @@ const Booking = sequelize.define('Booking', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    paymentStatus: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'pending', // Default to 'pending'
-    },
+   
 });
 
 Booking.belongsTo(Ticket, { foreignKey: 'ticketId' });
+Booking.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Booking;
 
