@@ -170,12 +170,6 @@ export default function TicketBookPage() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="text-muted-foreground">
-                    <span className="font-medium">Total Tickets Available:</span>
-                    500
-                  </div>
-                </div>
               </form>
               <div className="flex items-center justify-center mt-4">
                 <StripeCheckout

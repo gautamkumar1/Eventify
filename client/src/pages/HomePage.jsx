@@ -19,7 +19,7 @@ function HomePage() {
                 Explore a wide range of events and book your tickets with ease.
               </p>
               <Link
-                href="#"
+                to="/book-ticket"
                 className="inline-flex items-center justify-center h-12 px-6 rounded-md bg-white text-primary font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 prefetch={false}
               >
@@ -77,7 +77,7 @@ function HomePage() {
               />
               {/* card content */}
               <CardContent className="p-6 space-y-4">
-                <h3 className="text-2xl font-bold">Music Festival</h3>
+                <h3 className="text-2xl font-bold">Dance Festival</h3>
                 <p className="text-muted-foreground">Join us for a weekend of live music, food, and fun.</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ function HomePage() {
                     <span>June 10-12</span>
                   </div>
                   <Link
-                    href="#"
+                    to="/book-ticket"
                     className="inline-flex items-center justify-center h-10 px-4 rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     prefetch={false}
                   >
@@ -112,7 +112,7 @@ function HomePage() {
                     <span>July 1-15</span>
                   </div>
                   <Link
-                    href="#"
+                    to="/book-ticket"
                     className="inline-flex items-center justify-center h-10 px-4 rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     prefetch={false}
                   >
@@ -139,7 +139,7 @@ function HomePage() {
                     <span>August 5</span>
                   </div>
                   <Link
-                    href="#"
+                    to="/book-ticket"
                     className="inline-flex items-center justify-center h-10 px-4 rounded-md bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     prefetch={false}
                   >

@@ -1,13 +1,42 @@
+/* eslint-disable no-unused-vars */
 
-import { Link, Route, Routes } from "react-router-dom"
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
 import { Button } from "../../components/ui/button"
 
 
 import GetBookTicket from "./GetBookTicket"
 import { UpcomingEventsTable } from "./UpcomingEvent"
-
+import { useEffect } from "react"
+import { toast } from "react-toastify"
 export default function UserDashboard() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    console.log("location.search", location.search);
+    const token = searchParams.get("token");
+    // console.log("token", token);
+    // console.log("location.search", location.search);
+    if (token) {
+      console.log("User Effect1 Token: " + token);
+
+      localStorage.setItem("token", token);
+     
+      
+    }
+  }, [location.search]);
+
+  useEffect(()=>{
+    const token = localStorage.getItem('token');
+    console.log("User Effect2 Token: " + token);
+    
+    if(!token){
+      
+      navigate('/login', { replace: true });
+      toast.error("Unauthorized User")
+    }
+  },[])
   return (
     <div className="flex min-h-screen w-full">
       <aside className="hidden w-64 flex-col border-r bg-background p-6 md:flex">
@@ -18,14 +47,14 @@ export default function UserDashboard() {
           </Link>
         </div>
         <nav className="flex flex-1 flex-col space-y-2">
-          <Link
+          {/* <Link
             href="#"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
             <TicketIcon className="h-5 w-5" />
             <span>Show Current Ticket</span>
-          </Link>
+          </Link> */}
           <Link
             to="/userdashboard"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -55,14 +84,14 @@ export default function UserDashboard() {
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
               <nav className="grid gap-4 p-4 text-sm font-medium">
-                <Link
+                {/* <Link
                   href="#"
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   prefetch={false}
                 >
                   <TicketIcon className="h-5 w-5" />
                   <span>Show Current Ticket</span>
-                </Link>
+                </Link> */}
                 <Link
                   to="/userdashboard"
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

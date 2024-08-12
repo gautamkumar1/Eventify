@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const generateToken = require('../utils/jwt');
-
+const { OAuth2Client } = require('google-auth-library');
+const jwt = require('jsonwebtoken');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.register = async (req, res) => {
   try {
     const { username, email, password,isAdmin} = req.body;
@@ -125,4 +127,37 @@ exports.deleteUser = async (req, res) => {
       res.status(500).send({ error: 'Failed to delete user' });
   }
 };
+
+exports.verifyGoogleToken = async (req, res) => {
+  const { token } = req.body;
+  console.log('Received ID Token:', token);
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    // Check if the user exists, otherwise create a new user
+    let user = await User.findOne({ googleId });
+    if (!user) {
+      user = new User({ googleId, email, name });
+      await user.save();
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user._id, googleId, email },
+      JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid Google ID token' });
+  }
+}
+
 

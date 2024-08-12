@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 
 export const ProtectedRoute = ({ element, adminOnly }) => {
   const { isLoggedIn, isAdmin } = useSelector((state) => state.auth);
-
-  if (!isLoggedIn) {
+  const token = localStorage.getItem('token')
+  console.log("PR Token: " + token);
+  
+  if (!token) {
     return <Navigate to="/login" />;
   }
 

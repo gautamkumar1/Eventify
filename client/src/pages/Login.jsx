@@ -10,8 +10,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, reset } from '../redux/auth/authSlice';
 import { toast } from "react-toastify";
-import { useAuth0 } from "@auth0/auth0-react";
-import Cookies from "js-cookie";
+import { useGoogleLogin } from "@react-oauth/google";
+
+
 
 export default function Login() {
     const [users, setUsers] = useState({
@@ -19,7 +20,7 @@ export default function Login() {
         password: "",
     });
     const navigate = useNavigate();
-    const { loginWithRedirect , error} = useAuth0();
+    
 
     
     const handleInput = (e) => {
@@ -54,9 +55,33 @@ export default function Login() {
 
     };
 
-    // const handleOAuthLogin = (connection) => {
-    //     loginWithRedirect({ connection });
-    // };
+    const loginwithgoogle = ()=>{
+        window.open("http://localhost:3000/auth/google/callback","_self")
+    }
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            console.log("IdToke: "+tokenResponse);
+            
+          const token = tokenResponse.access_token;
+          // Send this token to your backend for further processing
+          const response = await fetch('/api/auth/google', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token }),
+          });
+          const data = await response.json();
+          // Store the JWT in local storage or cookies
+          console.log("Data: ",+data);
+          
+          localStorage.setItem('token', data.token);
+        },
+        onError: (error) => {
+          console.error('Google login error:', error);
+        },
+      });
+      
 
     return (
         <div className="flex flex-col min-h-screen justify-center items-center">
@@ -96,8 +121,9 @@ export default function Login() {
                                 </Button>
                             </div>
                         </form>
+                        {/* Google and FacebooknButton */}
                         <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4 pt-3">
-                            <Button onClick={() => loginWithRedirect()} className="w-full sm:w-auto">
+                            <Button onClick={loginwithgoogle} className="w-full sm:w-auto">
                                 <ChromeIcon className="mr-2 h-5 w-5" />
                                 Login with Google
                             </Button>

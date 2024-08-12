@@ -9,15 +9,17 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { createEvent } from "../redux/event/eventsSlice"
+import axios from "axios"
 
 export default function CreateEvent() {
+  const [UploadImage,setUploadImage] =useState("")
   const [event, setEvent] = useState({
     title: "",
     description: "",
     location: "",
     date: "",
     time: "",
-    imageUrl: ""
+    imageUrl:UploadImage
   })
   
   const dispatch = useDispatch();
@@ -37,6 +39,32 @@ export default function CreateEvent() {
     let value = e.target.value;
     setEvent({ ...event, [name]: value });
   };
+  const handelImage = async (e) => {
+    
+    const files = e.target.files;
+    // setEvent({ ...event, imageUrl: file });
+    // console.log(file);
+    
+    const data = new FormData();
+    console.log(data);
+    
+    data.append("file", files[0]);
+    // Eventify
+    data.append('upload_preset','Eventify')
+    try {
+      const response = await axios.post('https://api.cloudinary.com/v1_1/dgsr2ti0d/image/upload',data)
+      // console.log(response);
+      const uploadImageUrl = response.data.url;
+      setUploadImage(uploadImageUrl)
+      setEvent({ ...event, imageUrl: uploadImageUrl });
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  
+  console.log(event);
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,8 +74,10 @@ export default function CreateEvent() {
     // Dispatch the createEvent action with the formData
     dispatch(createEvent(event));
     toast.success("Event created successfully")
-    setEvent({ title: "", description: "", location: "", date: "", time: "", imageUrl: "" });
+    setEvent({ title: "", description: "", location: "", date: "", time: ""});
   };
+
+
   return (
     <div className="flex flex-col min-h-dvh">
     <main className="flex-1 flex items-center justify-center p-4 md:p-8">
@@ -123,8 +153,7 @@ export default function CreateEvent() {
                 <Input
                   id="image"
                   name="imageUrl"
-                  value={event.imageUrl}
-                  onChange={handleInput}
+                  onChange={(e)=>handelImage(e)}
                   type="file"
                   className="text-gray-300 bg-gray-900 file:text-gray-300 file:bg-gray-700 file:border-none"
                 />
@@ -141,3 +170,8 @@ export default function CreateEvent() {
   
   )
 }
+
+
+
+
+

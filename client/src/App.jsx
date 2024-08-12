@@ -26,7 +26,7 @@ import GetBookTicket from "./User/GetBookTicket"
 
 
 function App() {
-  // const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token')
   const { isLoggedIn,isAdmin} = useSelector((state) => state.auth);
   // console.log("isAdmin: " + isAdmin);
   // console.log("isLoggedIn: " + isLoggedIn);
@@ -48,8 +48,10 @@ function App() {
          {/* <Route path="/book-ticket" element={<ProtectedRoute element={<BookTicket/>}/> } /> */}
          <Route path="/success" element={<SuccesPayment/> } />
          <Route path="/failed" element={<FailedPayment/> } />
-         <Route path="/userdashboard/*" element={<ProtectedRoute element={<UserDashboard/> }/> } />
+         {/* <Route path="/userdashboard/*" element={<ProtectedRoute element={<UserDashboard/> }/> } /> */}
          <Route path="/book-ticket" element={<ProtectedRoute element={<TicketBookPage/>} /> } />
+         {/* <Route path="/book-ticket" element={TicketBookPage} /> */}
+         <Route path="/userdashboard/*" element={<UserDashboard/>}/>
         </Routes>
         <Footer/>
       </BrowserRouter>
