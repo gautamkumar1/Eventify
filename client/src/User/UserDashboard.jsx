@@ -9,6 +9,7 @@ import GetBookTicket from "./GetBookTicket"
 import { UpcomingEventsTable } from "./UpcomingEvent"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
+import Home from "./Home"
 export default function UserDashboard() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function UserDashboard() {
     <div className="flex min-h-screen w-full">
       <aside className="hidden w-64 flex-col border-r bg-background p-6 md:flex">
         <div className="mb-6">
-          <Link to="/" className="flex items-center gap-2 font-semibold" prefetch={false}>
+          <Link to="/userdashboard" className="flex items-center gap-2 font-semibold" prefetch={false}>
             <Package2Icon className="h-6 w-6" />
             <span>Eventify</span>
           </Link>
@@ -56,7 +57,7 @@ export default function UserDashboard() {
             <span>Show Current Ticket</span>
           </Link> */}
           <Link
-            to="/userdashboard"
+            to="/userdashboard/history-tickets"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             prefetch={false}
           >
@@ -93,7 +94,7 @@ export default function UserDashboard() {
                   <span>Show Current Ticket</span>
                 </Link> */}
                 <Link
-                  to="/userdashboard"
+                  to="/userdashboard/history-tickets"
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   prefetch={false}
                 >
@@ -122,9 +123,9 @@ export default function UserDashboard() {
 
 
           <Routes>
-            <Route path="/" element={<GetBookTicket />} />
+            <Route path="/" element={<Home />} />
             <Route path="upcoming-event" element={<UpcomingEventsTable />} />
-
+            <Route path="history-tickets" element={<GetBookTicket />} />
           </Routes>
         </main>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table";
@@ -27,10 +28,18 @@ export default function GetBookTicket() {
     return <div>Loading...</div>;
   }
 
-  if (status === "failed") {
-    return <div>Error: {error}</div>;
+  // if (status === "failed") {
+  //   return <div>Error: {error}</div>;
+  // }
+  if(bookedTickets.length === 0){
+    return <div className="bg-black min-h-screen flex items-center justify-center">
+    <div className="text-center">
+      <h1 className="text-4xl font-semibold text-white">
+      Oops! 🚫 No ticket found.
+      </h1>
+    </div>
+  </div>
   }
-
   return (
     <div className="overflow-x-auto">
       <Table>

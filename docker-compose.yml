@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: g@utam11  # Root password for MySQL
+      MYSQL_DATABASE: event-management  # Default database to create
+      MYSQL_USER: root  # MySQL user
+      MYSQL_PASSWORD: g@utam11 # MySQL user's password
+    ports:
+      - "3307:3306"  # Expose MySQL on port 3306
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persist MySQL data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=localhost  # Hostname of the MySQL service
+      - MYSQL_USER=root  # MySQL user
+      - MYSQL_PASSWORD=g@utam11  # MySQL password
+      - MYSQL_DATABASE=event-management  # MySQL database name
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql  # Ensure MySQL starts before the server
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/Task-3 Event Management
+    depends_on:
+      - server  # Ensure the server starts before the client
+
+volumes:
+  mysql_data:
