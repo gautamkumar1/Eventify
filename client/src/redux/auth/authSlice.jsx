@@ -7,9 +7,16 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axios.post('/api/user/login', userData);
       localStorage.setItem('token', response.data.token);
+
       const decodeToken = jwtDecode(response.data.token)
       console.log("UserData: ",decodeToken);
       localStorage.setItem('userData',JSON.stringify(decodeToken))
+
+      const decodedToken = jwtDecode(response.data.token)
+      console.log("userData: ",decodedToken);
+      
+      localStorage.setItem('userData', JSON.stringify(decodedToken))
+
       console.log("Response Data: " + JSON.stringify(response));
       
       return response.data;

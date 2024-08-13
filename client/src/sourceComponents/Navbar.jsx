@@ -16,6 +16,7 @@ export default function Navbar() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const token = localStorage.getItem('token');
   console.log("Navbar token: " + token);
+  console.log("Navbar User Data: ",localStorage.getItem('userData'));
   
   const handleLogout = () => {
     dispatch(logoutUser());

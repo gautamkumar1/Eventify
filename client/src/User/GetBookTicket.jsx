@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "../../components/ui/table";
-
+import { toast } from "react-toastify";
 export default function GetBookTicket() {
   const [bookedTickets, setBookedTickets] = useState([]);
   const [status, setStatus] = useState('idle');
@@ -29,17 +29,19 @@ export default function GetBookTicket() {
   }
 
   // if (status === "failed") {
+
   //   return <div>Error: {error}</div>;
   // }
   if(bookedTickets.length === 0){
     return <div className="bg-black min-h-screen flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-4xl font-semibold text-white">
+      <h1 className="text-4xl font-semibold text-red-500">
       Oops! 🚫 No ticket found.
       </h1>
     </div>
   </div>
   }
+  
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -66,4 +68,5 @@ export default function GetBookTicket() {
       </Table>
     </div>
   );
+
 }

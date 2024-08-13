@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: '3.8'
 
 services:
@@ -40,3 +41,48 @@ services:
 
 volumes:
   mysql_data:
+=======
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "Java#123"  # Root password for MySQL
+      MYSQL_DATABASE: eventify  # Default database to create
+      MYSQL_USER: root  # MySQL user
+      MYSQL_PASSWORD: "Java#123"  # MySQL user's password
+    network_mode: host
+    # ports:
+    #   - "3306:3307"  # Expose MySQL on port 3306
+
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=localhost  # Hostname of the MySQL service
+      - MYSQL_USER=root  # MySQL user
+      - MYSQL_PASSWORD="Java#123"  # MySQL password
+      - MYSQL_DATABASE=eventify  # MySQL database name
+    # ports:
+    #   - "9099:9099"
+
+    depends_on:
+      - mysql  # Ensure MySQL starts before the server
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5188:5188"
+    volumes:
+      - ./client:/Eventify
+    depends_on:
+      - server  # Ensure the server starts before the client
+
+volumes:
+  mysql_data:
+>>>>>>> 1b49fffa14635dee7ce366e02760a1574df4ed98
