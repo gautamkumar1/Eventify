@@ -2,9 +2,15 @@
 <div align="center">
 <!-- Image of the heading -->
   <br />
+<<<<<<< HEAD
     
   ![Eventify Home Page](https://github.com/user-attachments/assets/dde738a1-b5b7-4219-9ff5-91f623c473ac)
 
+=======
+    ![Eventify Home Page](https://github.com/user-attachments/assets/dde738a1-b5b7-4219-9ff5-91f623c473ac)
+
+  
+>>>>>>> 96c008184d03f06f4fd3bd4df480388e0305d055
   <br/>
   <br/>
 
