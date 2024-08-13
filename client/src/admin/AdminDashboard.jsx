@@ -6,7 +6,7 @@ import Tables from "./Tables"
 import CreateEvent from "./Create-Event"
 import GetAllEvent from "./GetAllEventTable"
 import TicketCreationPage from "./CreateTicket"
-
+import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
 import GetAllTickets from "./GetAllTickets"
 import GetAllUsers from "./GetAllUser"
 
@@ -75,14 +75,65 @@ export default function AdminDashboard() {
           </Link>
         </nav>
       </aside>
-      <div className="flex-1">
+      
+      <div className="flex flex-1 flex-col">
         {/* Header */}
-        <header className="sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b bg-background px-6">
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" className="lg:hidden">
-              <MenuIcon className="h-6 w-6" />
-            </Button>
-            <h2 className="text-lg font-semibold">Dashboard</h2>
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 md:h-16 md:px-6">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button size="icon" variant="outline" className="md:hidden">
+                <MenuIcon className="h-5 w-5" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="sm:max-w-xs">
+              <nav className="grid gap-4 p-4 text-sm font-medium">
+              <Link
+            to="/admin/create-events"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <CalendarIcon className="h-5 w-5" />
+            Create Event
+          </Link>
+          <Link
+            to="/admin/get-events"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <ListIcon className="h-5 w-5" />
+            View All Events
+          </Link>
+          <Link
+            to="/admin/create-tickets"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <TicketIcon className="h-5 w-5" />
+            Create Ticket
+          </Link>
+          <Link
+            to="/admin/get-tickets"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <ListIcon className="h-5 w-5" />
+            View All Tickets
+          </Link>
+          <Link
+            to="/admin/get-users"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+            prefetch={false}
+          >
+            <UsersIcon className="h-5 w-5" />
+            Manage Users
+          </Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
+          {/* Header */}
+          <div className="flex-1">
+            <h1 className="text-lg font-semibold md:text-xl">Admin Dashboard</h1>
           </div>
           
         </header>
