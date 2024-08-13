@@ -2,8 +2,9 @@
 <div align="center">
 <!-- Image of the heading -->
   <br />
-    
-  ![AceMock Ai Home Page](<AceMock Ai Home Page.png>) 
+    ![Eventify Home Page](https://github.com/user-attachments/assets/dde738a1-b5b7-4219-9ff5-91f623c473ac)
+
+  
   <br/>
   <br/>
 
