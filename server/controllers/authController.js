@@ -4,7 +4,7 @@ const generateToken = require('../utils/jwt');
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-exports.register = async (req, res) => {
+exports.register = async (req, res,next) => {
   try {
     const { username, email, password,isAdmin} = req.body;
     
@@ -30,12 +30,16 @@ exports.register = async (req, res) => {
     console.log(error);
     
     res.status(400).json({ message: "User registered failed" });
+    next(error)
   }
 };
 
-exports.login = async (req, res) => {
+exports.login = async (req, res,next) => {
   try {
     const { email, password } = req.body;
+    if(!email || !password) {
+      return res.status(400).json({ message: 'Please provide both email and password' });
+    } 
     const user = await User.findOne({ where: { email } });
     if(!user){
         return res.status(401).json({ message: 'User not found' });  
@@ -55,7 +59,10 @@ exports.login = async (req, res) => {
       user: user
     });
   } catch (error) {
+    console.log(error);
+    
     res.status(400).json({ message: 'Login failed' });
+    next(error)
   }
 };
 

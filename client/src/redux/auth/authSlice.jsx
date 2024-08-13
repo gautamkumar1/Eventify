@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+import { toast } from 'react-toastify';
+
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (userData, { rejectWithValue }) => {
@@ -8,19 +10,14 @@ export const loginUser = createAsyncThunk(
       const response = await axios.post('/api/user/login', userData);
       localStorage.setItem('token', response.data.token);
 
-      const decodeToken = jwtDecode(response.data.token)
-      console.log("UserData: ",decodeToken);
-      localStorage.setItem('userData',JSON.stringify(decodeToken))
+      const decodedToken = jwtDecode(response.data.token);
+      // console.log("UserData: ", decodedToken);
 
-      const decodedToken = jwtDecode(response.data.token)
-      console.log("userData: ",decodedToken);
-      
-      localStorage.setItem('userData', JSON.stringify(decodedToken))
-
-      console.log("Response Data: " + JSON.stringify(response));
-      
+      localStorage.setItem('userData', JSON.stringify(decodedToken));
       return response.data;
     } catch (error) {
+      toast.error(error.response.data.message)
+      
       return rejectWithValue(error.response.data);
     }
   }
@@ -33,6 +30,8 @@ export const registerUser = createAsyncThunk(
       const response = await axios.post('/api/user/register', userData);
       return response.data;
     } catch (error) {
+      console.log(error.response.data);
+      toast.error(error.response.data.message ? error.response.data.message : "Register Failed")
       return rejectWithValue(error.response.data);
     }
   }

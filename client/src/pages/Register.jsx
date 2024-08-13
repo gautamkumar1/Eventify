@@ -26,9 +26,6 @@ export default function Register() {
     const {isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        if (isError) {
-            toast.error("Register failed!");
-        }
 
         if (isSuccess) {
             setUser({ username: "", email: "", password: ""});

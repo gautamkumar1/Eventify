@@ -33,15 +33,9 @@ export default function Login() {
     const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        if (isError) {
-            toast.error("Login failed!");
-        }
-
+        
         if (isSuccess) {
             setUsers({ email: "", password: "" });
-            
-            
-            
             toast.success('Login successful!');
             navigate('/events');
         }
@@ -51,7 +45,6 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(loginUser(users));
-        
 
     };
 
